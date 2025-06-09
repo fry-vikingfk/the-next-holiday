@@ -11,7 +11,7 @@ class UpdateStateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +22,8 @@ class UpdateStateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'status' => ['nullable', 'boolean'],
-            'description' => ['nullable', 'string', 'max:500'],
+            'name' => ['string', 'max:255'],
+            'code' => ['string', 'max:2'],
         ];
     }
 }

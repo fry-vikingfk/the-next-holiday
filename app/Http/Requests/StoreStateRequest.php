@@ -11,7 +11,7 @@ class StoreStateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,10 +22,9 @@ class StoreStateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => ['required', 'string', 'size:36'], // UUID format
             'name' => ['required', 'string', 'max:255'],
-            'country_id' => ['required', 'exists:countries,id'],
-            'status' => ['nullable', 'boolean'],
-            'description' => ['nullable', 'string', 'max:500'],
+            'code' => ['required', 'string', 'max:10'],
         ];
     }
 }

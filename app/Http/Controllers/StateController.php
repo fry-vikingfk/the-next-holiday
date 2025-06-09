@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStateRequest;
+use App\Http\Requests\UpdateStateRequest;
 use App\Http\Resources\StateResource;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class StateController extends Controller
 
         return response()->json([
             'message' => 'State created successfully',
-            'data' => new StateResource($state)
+            'data' => StateResource::make($state)
         ])->setStatusCode(201);
     }
 
@@ -45,9 +46,15 @@ class StateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateStateRequest $request, string $id)
     {
-        //
+        $state = State::findOrFail($id);
+        $state->update($request->validated());
+
+        return response()->json([
+            'message' => 'State updated successfully',
+            'data' => StateResource::make($state)
+        ])->setStatusCode(202);  
     }
 
     /**

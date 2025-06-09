@@ -19,7 +19,7 @@ class StateFactory extends Factory
         return [
             'id' => Str::uuid(),
             'code' => fake()->lexify('??'), 
-            'name' => fake()->name(Str::random(9)), 
+            'name' => fake()->state(), 
         ];
     }
 }

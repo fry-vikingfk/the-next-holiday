@@ -16,6 +16,6 @@ Route::controller(StateController::class)
         Route::get('/', 'index')->name('index');
         Route::get('/{state}', 'show')->name('show');
         Route::post('/', 'store')->name('store');
-        Route::put('/{state}', 'update')->name('update');
+        Route::patch('/{state}', 'update')->name('update');
         Route::delete('/{state}', 'destroy')->name('destroy');
 });
