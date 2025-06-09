@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\StateController;
-use App\Models\State;
+use App\Http\Middleware\CatchExceptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +12,7 @@ Route::get('/user', function (Request $request) {
 Route::controller(StateController::class)
     ->prefix('states')
     ->as('states.')
+    ->middleware(CatchExceptions::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{state}', 'show')->name('show');
