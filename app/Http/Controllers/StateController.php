@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreStateRequest;
 use App\Http\Resources\StateResource;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -23,9 +24,14 @@ class StateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreStateRequest $request)
     {
-        //
+        $state = State::create($request->validated());
+
+        return response()->json([
+            'message' => 'State created successfully',
+            'data' => new StateResource($state)
+        ])->setStatusCode(201);
     }
 
     /**

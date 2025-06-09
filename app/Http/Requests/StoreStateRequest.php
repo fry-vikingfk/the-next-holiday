@@ -22,7 +22,10 @@ class StoreStateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'country_id' => ['required', 'exists:countries,id'],
+            'status' => ['nullable', 'boolean'],
+            'description' => ['nullable', 'string', 'max:500'],
         ];
     }
 }

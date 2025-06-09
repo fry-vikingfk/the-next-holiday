@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             StateSeeder::class,
-            // Add other seeders here as needed
         ]);
     }
 }

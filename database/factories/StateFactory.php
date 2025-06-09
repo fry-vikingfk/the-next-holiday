@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\State;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +11,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class StateFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = State::class;
+
     public function definition(): array
     {
+        
         return [
-            
+            'id' => Str::uuid(),
+            'code' => fake()->lexify('??'), 
+            'name' => fake()->name(Str::random(9)), 
         ];
     }
 }
