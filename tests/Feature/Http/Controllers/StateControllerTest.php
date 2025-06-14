@@ -32,7 +32,6 @@ class StateControllerTest extends TestCase
     public function test_store_creates_new_state()
     {
         $data = [
-            'id' => Str::uuid()->toString(),
             'code' => 'TX',
             'name' => 'Texas',
         ];
@@ -66,6 +65,34 @@ class StateControllerTest extends TestCase
                             'name' => 'Florida Updated',
                             'code' => 'FL',
                         ],
+                 ]);
+    }
+
+    public function test_delete_state()
+    {
+        $state = State::factory()->create(['code' => 'WA', 'name' => 'Washington']);
+
+        $response = $this->deleteJson(route('states.destroy', $state));
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('states', ['id' => $state->id]);
+    }
+    
+    public function test_show_state()
+    {
+        $state = State::factory()->create(['code' => 'IL', 'name' => 'Illinois']);
+
+        $response = $this->getJson(route('states.show', $state));
+
+        $response->assertStatus(200)
+                 ->assertJson([
+                     'message' => 'State details',
+                     'data' => [
+                         'id' => $state->id,
+                         'name' => 'Illinois',
+                         'code' => 'IL',
+                     ],
                  ]);
     }
 }

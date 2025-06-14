@@ -58,21 +58,19 @@ class HolidayControllerTest extends TestCase
                     'total',
                 ]
             ])
-            ->assertJsonCount(3, 'data.data'); // Ensure we have 3 holidays in the response
+            ->assertJsonCount(3, 'data.data'); 
     }
 
     public function test_store_creates_new_holiday()
     {
         $data = [
-            'id' => $this->faker->unique()->uuid(), // Unique identifier for the holiday
             'name' => $this->faker->word,
             'date' => $this->faker->date(),
             'note' => $this->faker->sentence,
-            'state_id' => State::factory()->create()->id, // Create a state first
+            'state_id' => State::factory()->create()->id, 
             'is_statutory' => $this->faker->boolean,
             'year' => now()->year,
         ];
-        // dd($data);
 
         $response = $this->post('/api/holidays', $data);
         $response->assertStatus(201)
@@ -86,8 +84,34 @@ class HolidayControllerTest extends TestCase
                     'name',
                     'date',
                     'note',
-                    'state_id',
                     'is_statutory',
+                    'state_id',
+                    'is_public',
+                    'year',
+                    'created_at',
+                    'updated_at',
+                ],
+            ]);
+    }
+
+    public function test_show_returns_holiday_details()
+    {
+        $holiday = Holiday::factory()->create();
+
+        $response = $this->get("/api/holidays/{$holiday->id}");
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Holiday details',
+            ])
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    'id',
+                    'name',
+                    'date',
+                    'note',
+                    'is_statutory',
+                    'is_public',
                     'year',
                     'created_at',
                     'updated_at',
@@ -97,6 +121,44 @@ class HolidayControllerTest extends TestCase
                         'created_at',
                         'updated_at',
                     ],
+                    'links' => [
+                        'self',
+                        'update',
+                        'delete',
+                    ],
+                ],
+            ]);
+    }
+
+    public function test_update_modifies_existing_holiday()
+    {
+        $holiday = Holiday::factory()->create();
+
+        $data = [
+            'name' => 'Updated Holiday',
+            'note' => 'Updated note',
+            'is_statutory' => true,
+            'year' => now()->year,
+        ];
+
+        $response = $this->patchJson(route('holidays.update', $holiday), $data);
+        // dd($response->dump()); // Debugging line to check response content
+        $response->assertStatus(202)
+            ->assertJson([
+                'message' => 'Holiday updated successfully',
+            ])
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    'id',
+                    'name',
+                    'date',
+                    'note',
+                    'is_statutory',
+                    'is_public',
+                    'year',
+                    'created_at',
+                    'updated_at',
                 ],
             ]);
     }
