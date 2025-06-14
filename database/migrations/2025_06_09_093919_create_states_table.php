@@ -10,7 +10,7 @@ return new class extends Migration
     {
         if (!Schema::hasTable('states')) {
             Schema::create('states', function (Blueprint $table) {
-                $table->uuid('id')->primary();
+                $table->id();
                 $table->string('code', 2); // e.g. 'BY', 'BW'
                 $table->string('name');      
                 $table->timestamps();

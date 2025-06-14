@@ -17,9 +17,10 @@ class StateFactory extends Factory
     {
         
         return [
-            'id' => Str::uuid(),
-            'code' => fake()->lexify('??'), 
+            'code' => strtoupper(fake()->lexify('??')),
             'name' => fake()->state(), 
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
