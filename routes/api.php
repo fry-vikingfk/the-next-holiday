@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\StateController;
-use App\Http\Middleware\CatchExceptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CatchExceptions;
+use App\Http\Controllers\StateController;
+use App\Http\Controllers\HolidayController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -20,3 +21,16 @@ Route::controller(StateController::class)
         Route::patch('/{state}', 'update')->name('update');
         Route::delete('/{state}', 'destroy')->name('destroy');
 });
+
+Route::controller(HolidayController::class)
+    ->prefix('holidays')
+    ->as('holidays.')
+    ->middleware(CatchExceptions::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{holiday}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::patch('/{holiday}', 'update')->name('update');
+        Route::delete('/{holiday}', 'destroy')->name('destroy');
+});
+

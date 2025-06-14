@@ -15,10 +15,9 @@ class StateController extends Controller
      */
     public function index()
     {
-       // fetch all states from the database
         return response()->json([
             'message' => 'List of states',
-            'data' => StateResource::collection(State::all())
+            'data' => StateResource::collection(State::with('holidays')->paginate(10))
         ])->setStatusCode(200);
     }
 
@@ -40,7 +39,12 @@ class StateController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $state = State::with('holidays')->findOrFail($id);
+
+        return response()->json([
+            'message' => 'State details',
+            'data' => StateResource::make($state)
+        ])->setStatusCode(200);
     }
 
     /**
@@ -62,6 +66,9 @@ class StateController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $state = State::findOrFail($id);
+        $state->delete();
+
+        return response()->noContent();
     }
 }

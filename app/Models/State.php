@@ -2,20 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Holiday;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class State extends Model
 {
     /** @use HasFactory<\Database\Factories\StateFactory> */
     use HasFactory;
 
-    public $incrementing = false;
-    protected $keyType = 'string'; 
+    protected $primaryKey = 'id'; 
 
     protected $fillable = [
-        'id',
         'name',
         'code',
     ];
+
+    public function holidays()
+    {
+        return $this->hasMany(Holiday::class);
+    }
 }

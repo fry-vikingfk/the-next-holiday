@@ -14,33 +14,6 @@ class StateSeeder extends Seeder
      */
     public function run(): void
     {
-        $states = [
-            ['code' => 'BW', 'name' => 'Baden-Württemberg'],
-            ['code' => 'BY', 'name' => 'Bayern'],
-            ['code' => 'BE', 'name' => 'Berlin'],
-            ['code' => 'BB', 'name' => 'Brandenburg'],
-            ['code' => 'HB', 'name' => 'Bremen'],
-            ['code' => 'HH', 'name' => 'Hamburg'],
-            ['code' => 'HE', 'name' => 'Hessen'],
-            ['code' => 'MV', 'name' => 'Mecklenburg-Vorpommern'],
-            ['code' => 'NI', 'name' => 'Niedersachsen'],
-            ['code' => 'NW', 'name' => 'Nordrhein-Westfalen'],
-            ['code' => 'RP', 'name' => 'Rheinland-Pfalz'],
-            ['code' => 'SL', 'name' => 'Saarland'],
-            ['code' => 'SN', 'name' => 'Sachsen'],
-            ['code' => 'ST', 'name' => 'Sachsen-Anhalt'],
-            ['code' => 'SH', 'name' => 'Schleswig-Holstein'],
-            ['code' => 'TH', 'name' => 'Thüringen']
-        ];
-
-        foreach ($states as $state) {
-            State::updateOrCreate(
-                [
-                    'id' => Str::uuid(),
-                    'code' => $state['code']
-                ],
-                $state
-            );
-        }
+        State::factory()->count(16)->create();
     }
 }

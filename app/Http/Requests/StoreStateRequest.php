@@ -22,7 +22,6 @@ class StoreStateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'string', 'size:36'], // UUID format
             'name' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:10'],
         ];
