@@ -69,8 +69,6 @@ class StateController extends Controller
         $state = State::findOrFail($id);
         $state->delete();
 
-        return response()->json([
-            'message' => 'State deleted successfully',
-        ])->setStatusCode(204);
+        return response()->noContent();
     }
 }

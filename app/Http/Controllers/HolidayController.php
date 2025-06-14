@@ -70,8 +70,6 @@ class HolidayController extends Controller
         $holiday = Holiday::findOrFail($id);
         $holiday->delete();
 
-        return response()->json([
-            'message' => 'Holiday deleted successfully',
-        ])->setStatusCode(204);
+        return response()->noContent();
     }
 }
