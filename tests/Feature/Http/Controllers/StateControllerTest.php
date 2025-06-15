@@ -4,8 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use Tests\TestCase;
 use App\Models\State;
-use Illuminate\Support\Str;
-use App\Http\Resources\StateResource;
+use App\Models\Country;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StateControllerTest extends TestCase
@@ -34,9 +33,10 @@ class StateControllerTest extends TestCase
         $data = [
             'code' => 'TX',
             'name' => 'Texas',
+            'country_id' => Country::factory()->create()->id, // Assuming country_id is required
         ];
         
-        $response = $this->post('/api/states', $data);
+        $response = $this->postJson(route('states.store'), $data);
 
         $response->assertStatus(201)
                  ->assertJson([
