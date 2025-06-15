@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
-use Illuminate\Http\Request;
-use App\Http\Requests\CountryRequest;
 use App\Http\Resources\CountryResource;
-use PHPUnit\Framework\Constraint\Count;
+use App\Http\Requests\CountryStoreRequest;
 use App\Http\Requests\CountryUpdateRequest;
 
 class CountryController extends Controller
@@ -27,7 +25,7 @@ class CountryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CountryRequest $request)
+    public function store(CountryStoreRequest $request)
     {
         $country = Country::create($request->validated());
 
