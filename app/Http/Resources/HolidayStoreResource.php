@@ -23,6 +23,7 @@ class HolidayStoreResource extends JsonResource
             'note' => $this->note,
             'is_statutory' => $this->is_statutory,
             'state_id' => $this->state_id,
+            'country_id' => $this->country_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CatchExceptions;
 use App\Http\Controllers\StateController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\HolidayController;
 
 Route::get('/user', function (Request $request) {
@@ -32,5 +33,17 @@ Route::controller(HolidayController::class)
         Route::post('/', 'store')->name('store');
         Route::patch('/{holiday}', 'update')->name('update');
         Route::delete('/{holiday}', 'destroy')->name('destroy');
+});
+
+Route::controller(CountryController::class)
+    ->prefix('countries')
+    ->as('countries.')
+    ->middleware(CatchExceptions::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{country}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::patch('/{country}', 'update')->name('update');
+        Route::delete('/{country}', 'destroy')->name('destroy');
 });
 

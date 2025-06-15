@@ -25,6 +25,7 @@ class HolidayResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'state' => StateResource::make($this->whenLoaded('state')),
+            'country' => CountryResource::make($this->whenLoaded('country')),
             'links' => [
                 'self' => route('holidays.show', $this->id),
                 'update' => route('holidays.update', $this->id),

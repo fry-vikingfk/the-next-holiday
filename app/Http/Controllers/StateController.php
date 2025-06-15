@@ -6,7 +6,6 @@ use App\Http\Requests\StoreStateRequest;
 use App\Http\Requests\UpdateStateRequest;
 use App\Http\Resources\StateResource;
 use App\Models\State;
-use Illuminate\Http\Request;
 
 class StateController extends Controller
 {
@@ -17,7 +16,7 @@ class StateController extends Controller
     {
         return response()->json([
             'message' => 'List of states',
-            'data' => StateResource::collection(State::with('holidays')->paginate(10))
+            'data' => StateResource::collection(State::with(['holidays', 'country'])->paginate(10))
         ])->setStatusCode(200);
     }
 

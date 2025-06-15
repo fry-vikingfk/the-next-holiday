@@ -24,6 +24,7 @@ class UpdateStateRequest extends FormRequest
         return [
             'name' => ['string', 'max:255'],
             'code' => ['string', 'max:2'],
+            'country_id' => ['exists:countries,id'],
         ];
     }
 }
