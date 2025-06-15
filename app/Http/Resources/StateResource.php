@@ -20,6 +20,7 @@ class StateResource extends JsonResource
             'code' => $this->code,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'country' => CountryResource::make($this->whenLoaded('country')),
             'holidays' => HolidayResource::collection($this->whenLoaded('holidays')),
             'links' => [
                 'self' => route('states.show', $this->id),

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class State extends Model
 {
-    /** @use HasFactory<\Database\Factories\StateFactory> */
     use HasFactory;
 
     protected $primaryKey = 'id'; 
@@ -21,5 +20,10 @@ class State extends Model
     public function holidays()
     {
         return $this->hasMany(Holiday::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }

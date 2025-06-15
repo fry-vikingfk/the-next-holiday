@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Holiday extends Model
 {
-    /** @use HasFactory<\Database\Factories\HolidayFactory> */
     use HasFactory;
 
-    public $primaryKey = 'id'; // Assuming 'id' is the primary key
+    public $primaryKey = 'id';
 
     protected $fillable = [
         'name',
@@ -26,5 +25,10 @@ class Holiday extends Model
     public function state()
     {
         return $this->belongsTo(State::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }

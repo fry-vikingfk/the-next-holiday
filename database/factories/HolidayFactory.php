@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use App\Models\State;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Holiday>
- */
+
 class HolidayFactory extends Factory
 {
     /**
@@ -23,6 +22,8 @@ class HolidayFactory extends Factory
             'year' => $this->faker->year(),
             'note' => $this->faker->optional()->sentence(), 
             'is_statutory' => $this->faker->boolean(50), 
+            'state_id' => State::factory(),
+            'country_id' => Country::factory(),
             'created_at' => now(),
             'updated_at' => now(),
         ];
