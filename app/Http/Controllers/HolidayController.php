@@ -3,19 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Holiday;
-use Illuminate\Http\Request;
-use App\Http\Resources\HolidayResource;
-use App\Http\Requests\StoreHolidayRequest;
-use App\Http\Requests\UpdateHolidayRequest;
-use App\Http\Resources\HolidayStoreResource;
+use App\Http\Resources\Holiday\HolidayResource;
+use App\Http\Requests\Holiday\StoreHolidayRequest;
+use App\Http\Requests\Holiday\UpdateHolidayRequest;
+use App\Http\Resources\Holiday\HolidayStoreResource;
+use App\Repositories\Contracts\HolidayRepositoryInterface;
 
 class HolidayController extends Controller
 {
+    public function __construct(
+        private readonly HolidayRepositoryInterface $holidayRepository
+        )
+    {}
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $holidays = $this->holidayRepository->all();
+        dd($holidays);
         return response()->json([
             'message' => 'List of holidays',
             'data' => Holiday::with('state')->paginate(10),
