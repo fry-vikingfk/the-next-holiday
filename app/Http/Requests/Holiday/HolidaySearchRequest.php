@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Holiday;
 
-use App\Enums\HolidayTypeEnum;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class HolidaySearchRequest extends FormRequest
@@ -27,10 +25,9 @@ class HolidaySearchRequest extends FormRequest
         return [
             'countryIsoCode' => ['sometimes', 'string' , 'regex:/^[A-Z]{2}$/'],
             'subdivisionCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}(?:-[A-Z]{2})?(?:-[A-Z]{2})?$/'],
-            'type' => ['sometimes', 'string', Rule::in(HolidayTypeEnum::values())],
             'languageIsoCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}$/'],
-            'startDate' => ['sometimes', 'date:Y-m-d'],
-            'endDate' => ['sometimes', 'date:Y-m-d'],
+            'validFrom' => ['sometimes', 'date:Y-m-d'],
+            'validTo' => ['sometimes', 'date:Y-m-d'],
         ];
     }
 
@@ -40,11 +37,15 @@ class HolidaySearchRequest extends FormRequest
         $languageIsoCode = strtoupper($this->input('languageIsoCode', 'en'));
         $countryIsoCode = strtoupper($this->input('countryIsoCode', 'DE'));
         $subdivisionCode = strtoupper($this->input('subdivisionCode', ''));
+        $startDate = $this->input('validFrom', Carbon::now()->toDateString());
+        $endDate = $this->input('validTo', Carbon::now()->endOfYear()->toDateString());
 
         $this->merge([
             'languageIsoCode' => $languageIsoCode,
             'countryIsoCode' => $countryIsoCode,
             'subdivisionCode' => $subdivisionCode,
+            'validFrom' => $startDate,
+            'validTo' => $endDate,
         ]);
     }
 }

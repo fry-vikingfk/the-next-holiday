@@ -23,7 +23,7 @@ class OpenHolidaysApiService
 
     public function getPublicHolidays(
         string $countryIsoCode, 
-        string $languageIsoCode = '', 
+        string $languageIsoCode = '',
         ?string $subdivisionCode = null,
         string $validFrom, 
         string $validTo

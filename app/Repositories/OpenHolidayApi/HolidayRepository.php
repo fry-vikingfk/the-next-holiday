@@ -19,13 +19,13 @@ class HolidayRepository implements HolidayRepositoryInterface
 	public function getPublicHolidays(HolidaySearchRequest $request): array
 	{
 		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode'));
-
+		
 		return $this->service->getPublicHolidays(
-			countryIsoCode: $request->validated('countryIsoCode', 'DE'),
-			languageIsoCode: $request->validated('languageIsoCode', 'en'),
-			subdivisionCode: $request->validated('subdivisionCode', null),
-			validFrom: $request->validated('validFrom', Carbon::now()->toDateString()),
-			validTo: $request->validated('validTo', Carbon::now()->endOfYear()->toDateString())
+			countryIsoCode: $request->validated('countryIsoCode'),
+			languageIsoCode: $request->validated('languageIsoCode'),
+			subdivisionCode: $request->validated('subdivisionCode'),
+			validFrom: $request->validated('validFrom'),
+			validTo: $request->validated('validTo')
 		)->toArray();
 	}
 
@@ -34,11 +34,11 @@ class HolidayRepository implements HolidayRepositoryInterface
 		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode'));
 
 		return $this->service->getSchoolHolidays(
-			countryIsoCode: $request->validated('countryIsoCode', 'DE'),
-			languageIsoCode: $request->validated('languageIsoCode', 'en'),
-			subdivisionCode: $request->validated('subdivisionCode', null),
-			validFrom: $request->validated('validFrom', Carbon::now()->toDateString()),
-			validTo: $request->validated('validTo', Carbon::now()->endOfYear()->toDateString())
+			countryIsoCode: $request->validated('countryIsoCode'),
+			languageIsoCode: $request->validated('languageIsoCode'),
+			subdivisionCode: $request->validated('subdivisionCode'),
+			validFrom: $request->validated('validFrom'),
+			validTo: $request->validated('validTo')
 		)->toArray();
 	}
 }
