@@ -5,12 +5,10 @@ namespace App\Repositories\Contracts;
 use App\Http\Requests\Holiday\StoreHolidayRequest;
 use App\Http\Requests\Holiday\HolidaySearchRequest;
 use App\Http\Requests\Holiday\UpdateHolidayRequest;
+use App\Models\Holiday;
 
 interface HolidayRepositoryInterface
 {
-    public function all(HolidaySearchRequest $request): array;
-    public function find(int $id): array;
-    public function create(StoreHolidayRequest $request): array;
-    public function update(UpdateHolidayRequest $request, int $id): array;
-    public function delete(int $id);
+    public function getPublicHolidays(HolidaySearchRequest $request): array;
+    public function getSchoolHolidays(HolidaySearchRequest $request): array;
 }

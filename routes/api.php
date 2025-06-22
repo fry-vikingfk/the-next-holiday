@@ -5,11 +5,22 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CatchExceptions;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\CountryController;
-use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\GetPublicHolidayController;
+use App\Http\Controllers\GetSchoolHolidayController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::prefix('holidays')
+    ->middleware(CatchExceptions::class)
+    ->group(function () {
+        Route::get('public', GetPublicHolidayController::class)
+            ->name('holidays.public');
+
+        Route::get('school', GetSchoolHolidayController::class)
+            ->name('holidays.school');
+});
 
 Route::controller(StateController::class)
     ->prefix('states')
@@ -23,17 +34,6 @@ Route::controller(StateController::class)
         Route::delete('/{state}', 'destroy')->name('destroy');
 });
 
-Route::controller(HolidayController::class)
-    ->prefix('holidays')
-    ->as('holidays.')
-    ->middleware(CatchExceptions::class)
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/{holiday}', 'show')->name('show');
-        Route::post('/', 'store')->name('store');
-        Route::patch('/{holiday}', 'update')->name('update');
-        Route::delete('/{holiday}', 'destroy')->name('destroy');
-});
 
 Route::controller(CountryController::class)
     ->prefix('countries')
@@ -46,4 +46,3 @@ Route::controller(CountryController::class)
         Route::patch('/{country}', 'update')->name('update');
         Route::delete('/{country}', 'destroy')->name('destroy');
 });
-

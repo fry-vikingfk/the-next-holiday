@@ -28,9 +28,23 @@ class HolidaySearchRequest extends FormRequest
             'countryIsoCode' => ['sometimes', 'string' , 'regex:/^[A-Z]{2}$/'],
             'subdivisionCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}(?:-[A-Z]{2})?(?:-[A-Z]{2})?$/'],
             'type' => ['sometimes', 'string', Rule::in(HolidayTypeEnum::values())],
-            'languageIsoCode' => ['sometimes', 'string', 'regex:/^[a-z]{2}(-[A-Z]{2})?$/'],
+            'languageIsoCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}$/'],
             'startDate' => ['sometimes', 'date:Y-m-d'],
             'endDate' => ['sometimes', 'date:Y-m-d'],
         ];
+    }
+
+    
+    protected function prepareForValidation(): void
+    {
+        $languageIsoCode = strtoupper($this->input('languageIsoCode', 'en'));
+        $countryIsoCode = strtoupper($this->input('countryIsoCode', 'DE'));
+        $subdivisionCode = strtoupper($this->input('subdivisionCode', ''));
+
+        $this->merge([
+            'languageIsoCode' => $languageIsoCode,
+            'countryIsoCode' => $countryIsoCode,
+            'subdivisionCode' => $subdivisionCode,
+        ]);
     }
 }

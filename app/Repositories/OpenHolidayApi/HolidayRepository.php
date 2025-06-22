@@ -13,42 +13,32 @@ class HolidayRepository implements HolidayRepositoryInterface
 {
     public function __construct(
         private readonly OpenHolidaysApiService $service
-        )
-    {
-        
-    }
+    )
+    {}
 
- 
-	public function all(HolidaySearchRequest $request): array
+	public function getPublicHolidays(HolidaySearchRequest $request): array
 	{
-		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode')); // Set locale based on request
+		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode'));
 
 		return $this->service->getPublicHolidays(
-			countryIsoCode: $request->validated('countryIsoCode', 'DE'), // Default to DE if not provided
+			countryIsoCode: $request->validated('countryIsoCode', 'DE'),
 			languageIsoCode: $request->validated('languageIsoCode', 'en'),
 			subdivisionCode: $request->validated('subdivisionCode', null),
-			validFrom: $request->validated('validFrom', Carbon::now()->toDateString()), // Default to start of current year
-			validTo: $request->validated('validTo', Carbon::now()->endOfYear()->toDateString())  // Default to end of current year
+			validFrom: $request->validated('validFrom', Carbon::now()->toDateString()),
+			validTo: $request->validated('validTo', Carbon::now()->endOfYear()->toDateString())
 		)->toArray();
 	}
 
-	public function find(int $id):  array
+	public function getSchoolHolidays(HolidaySearchRequest $request): array
 	{
-		return [];
-	}
+		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode'));
 
-	public function create(StoreHolidayRequest $request): array
-	{
-		return [];
-	}
-
-	public function update(UpdateHolidayRequest $request, int $id): array
-	{
-		return [];
-	}
-
-	public function delete($id)
-	{
-		// TODO: Implement delete() method.
+		return $this->service->getSchoolHolidays(
+			countryIsoCode: $request->validated('countryIsoCode', 'DE'),
+			languageIsoCode: $request->validated('languageIsoCode', 'en'),
+			subdivisionCode: $request->validated('subdivisionCode', null),
+			validFrom: $request->validated('validFrom', Carbon::now()->toDateString()),
+			validTo: $request->validated('validTo', Carbon::now()->endOfYear()->toDateString())
+		)->toArray();
 	}
 }
