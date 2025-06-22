@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Holiday;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HolidayResource extends JsonResource
+class HolidayStoreResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,15 +22,10 @@ class HolidayResource extends JsonResource
             'year' => $this->year,
             'note' => $this->note,
             'is_statutory' => $this->is_statutory,
+            'state_id' => $this->state_id,
+            'country_id' => $this->country_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'state' => StateResource::make($this->whenLoaded('state')),
-            'country' => CountryResource::make($this->whenLoaded('country')),
-            'links' => [
-                'self' => route('holidays.show', $this->id),
-                'update' => route('holidays.update', $this->id),
-                'delete' => route('holidays.destroy', $this->id),       
-            ],
         ];
     }
 }

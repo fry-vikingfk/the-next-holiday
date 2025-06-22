@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Country\StoreCountryRequest;
+use App\Http\Requests\Country\UpdateCountryRequest;
+use App\Http\Resources\Country\CountryResource;
 use App\Models\Country;
-use App\Http\Resources\CountryResource;
-use App\Http\Requests\CountryStoreRequest;
-use App\Http\Requests\CountryUpdateRequest;
 
 class CountryController extends Controller
 {
+    public function __construct()
+    {
+        
+    }
     /**
      * Display a listing of the resource.
      */
@@ -25,7 +29,7 @@ class CountryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CountryStoreRequest $request)
+    public function store(StoreCountryRequest $request)
     {
         $country = Country::create($request->validated());
 
@@ -49,7 +53,7 @@ class CountryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CountryUpdateRequest $request, Country $country)
+    public function update(UpdateCountryRequest $request, Country $country)
     {
         $country->update($request->validated());
 

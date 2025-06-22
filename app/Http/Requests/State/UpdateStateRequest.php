@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\State;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CountryUpdateRequest extends FormRequest
+class UpdateStateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,8 @@ class CountryUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'code' => ['string', 'max:10'],
+            'code' => ['string', 'max:2'],
+            'country_id' => ['exists:countries,id'],
         ];
     }
 }
