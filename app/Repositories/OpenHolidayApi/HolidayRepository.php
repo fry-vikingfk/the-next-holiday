@@ -3,10 +3,9 @@
 namespace App\Repositories\OpenHolidayApi;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use App\Services\OpenHolidaysApiService;
-use App\Http\Requests\Holiday\StoreHolidayRequest;
 use App\Http\Requests\Holiday\HolidaySearchRequest;
-use App\Http\Requests\Holiday\UpdateHolidayRequest;
 use App\Repositories\Contracts\HolidayRepositoryInterface;
 
 class HolidayRepository implements HolidayRepositoryInterface
@@ -16,7 +15,7 @@ class HolidayRepository implements HolidayRepositoryInterface
     )
     {}
 
-	public function getPublicHolidays(HolidaySearchRequest $request): array
+	public function getPublicHolidays(HolidaySearchRequest $request): Collection
 	{
 		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode'));
 		
@@ -26,10 +25,10 @@ class HolidayRepository implements HolidayRepositoryInterface
 			subdivisionCode: $request->validated('subdivisionCode'),
 			validFrom: $request->validated('validFrom'),
 			validTo: $request->validated('validTo')
-		)->toArray();
+		);
 	}
 
-	public function getSchoolHolidays(HolidaySearchRequest $request): array
+	public function getSchoolHolidays(HolidaySearchRequest $request): Collection
 	{
 		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode'));
 
@@ -39,6 +38,6 @@ class HolidayRepository implements HolidayRepositoryInterface
 			subdivisionCode: $request->validated('subdivisionCode'),
 			validFrom: $request->validated('validFrom'),
 			validTo: $request->validated('validTo')
-		)->toArray();
+		);
 	}
 }

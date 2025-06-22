@@ -7,6 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class HolidaySearchRequest extends FormRequest
 {
+    public const DEFAULT_LANGUAGE = 'en';
+    public const DEFAULT_COUNTRY = 'DE';
+    public const DEFAULT_SUBDIVISION = '';
+    public const DEFAULT_PER_PAGE = 4;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -28,17 +33,23 @@ class HolidaySearchRequest extends FormRequest
             'languageIsoCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}$/'],
             'validFrom' => ['sometimes', 'date:Y-m-d'],
             'validTo' => ['sometimes', 'date:Y-m-d'],
+            'page' => ['sometimes', 'integer', 'min:1'],
+            'perPage' => ['sometimes', 'integer', 'min:1', 'max:100'],
         ];
     }
 
     
     protected function prepareForValidation(): void
     {
-        $languageIsoCode = strtoupper($this->input('languageIsoCode', 'en'));
-        $countryIsoCode = strtoupper($this->input('countryIsoCode', 'DE'));
-        $subdivisionCode = strtoupper($this->input('subdivisionCode', ''));
+        $languageIsoCode = strtoupper($this->input('languageIsoCode', self::DEFAULT_LANGUAGE));
+        $countryIsoCode = strtoupper($this->input('countryIsoCode', self::DEFAULT_COUNTRY));
+        $subdivisionCode = strtoupper($this->input('subdivisionCode', self::DEFAULT_SUBDIVISION));
         $startDate = $this->input('validFrom', Carbon::now()->toDateString());
         $endDate = $this->input('validTo', Carbon::now()->endOfYear()->toDateString());
+
+          // Pagination defaults
+        $page = (int) $this->input('page', 1);
+        $perPage = (int) $this->input('perPage', self::DEFAULT_PER_PAGE);
 
         $this->merge([
             'languageIsoCode' => $languageIsoCode,
@@ -46,6 +57,8 @@ class HolidaySearchRequest extends FormRequest
             'subdivisionCode' => $subdivisionCode,
             'validFrom' => $startDate,
             'validTo' => $endDate,
+            'page' => $page,
+            'perPage' => $perPage,
         ]);
     }
 }
