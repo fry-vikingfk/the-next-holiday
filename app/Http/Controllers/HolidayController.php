@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Holiday;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Holiday\HolidayResource;
 use App\Http\Requests\Holiday\StoreHolidayRequest;
+use App\Http\Requests\Holiday\HolidaySearchRequest;
 use App\Http\Requests\Holiday\UpdateHolidayRequest;
 use App\Http\Resources\Holiday\HolidayStoreResource;
 use App\Repositories\Contracts\HolidayRepositoryInterface;
@@ -18,14 +20,16 @@ class HolidayController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(HolidaySearchRequest $request)
     {
-        $holidays = $this->holidayRepository->all();
-        dd($holidays);
+        $holidays = $this->holidayRepository->all($request);
+
         return response()->json([
             'message' => 'List of holidays',
-            'data' => Holiday::with('state')->paginate(10),
-        ])->setStatusCode(200);
+            'data' => HolidayResource::collection(
+               $holidays
+            ),
+        ])->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**

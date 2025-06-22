@@ -24,6 +24,7 @@ class OpenHolidaysApiService
     public function getPublicHolidays(
         string $countryIsoCode, 
         string $languageIsoCode = '', 
+        ?string $subdivisionCode = null,
         string $validFrom, 
         string $validTo
     ): ?Collection
@@ -33,6 +34,7 @@ class OpenHolidaysApiService
                 'query' => [
                     'countryIsoCode' => $countryIsoCode,
                     'languageIsoCode' => $languageIsoCode,
+                    'subdivisionCode' => $subdivisionCode,
                     'validFrom' => $validFrom,
                     'validTo' => $validTo,
                 ],
@@ -42,6 +44,34 @@ class OpenHolidaysApiService
 
         } catch (GuzzleException $e) {
             Log::error('Error fetching public holidays: ' . $e->getMessage());
+
+            return null;
+        }
+    }
+
+    public function getSchoolHolidays(
+        string $countryIsoCode, 
+        string $languageIsoCode = '', 
+        ?string $subdivisionCode = null,
+        string $validFrom, 
+        string $validTo
+    ): ?Collection
+    {
+        try {
+            $response = $this->client->get('SchoolHolidays', [
+                'query' => [
+                    'countryIsoCode' => $countryIsoCode,
+                    'languageIsoCode' => $languageIsoCode,
+                    'subdivisionCode' => $subdivisionCode,
+                    'validFrom' => $validFrom,
+                    'validTo' => $validTo,
+                ],
+            ]);
+
+            return collect(json_decode($response->getBody()->getContents()));
+
+        } catch (GuzzleException $e) {
+            Log::error('Error fetching school holidays: ' . $e->getMessage());
 
             return null;
         }

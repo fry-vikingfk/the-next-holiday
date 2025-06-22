@@ -2,12 +2,12 @@
 
 namespace App\Repositories\OpenHolidayApi;
 
+use Carbon\Carbon;
+use App\Services\OpenHolidaysApiService;
 use App\Http\Requests\Holiday\StoreHolidayRequest;
+use App\Http\Requests\Holiday\HolidaySearchRequest;
 use App\Http\Requests\Holiday\UpdateHolidayRequest;
 use App\Repositories\Contracts\HolidayRepositoryInterface;
-use App\Services\OpenHolidaysApiService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\Rules\In;
 
 class HolidayRepository implements HolidayRepositoryInterface
 {
@@ -18,13 +18,17 @@ class HolidayRepository implements HolidayRepositoryInterface
         
     }
 
-	public function all(): array
+ 
+	public function all(HolidaySearchRequest $request): array
 	{
+		Carbon::setLocale($request->validated('languageIsoCode', 'languageIsoCode')); // Set locale based on request
+
 		return $this->service->getPublicHolidays(
-			countryIsoCode: 'DE', // Default to Germany
-			languageIsoCode: 'en', // Default language
-			validFrom: '2023-01-01', // Default start date
-			validTo: '2023-12-31'  // Default end date
+			countryIsoCode: $request->validated('countryIsoCode', 'DE'), // Default to DE if not provided
+			languageIsoCode: $request->validated('languageIsoCode', 'en'),
+			subdivisionCode: $request->validated('subdivisionCode', null),
+			validFrom: $request->validated('validFrom', Carbon::now()->toDateString()), // Default to start of current year
+			validTo: $request->validated('validTo', Carbon::now()->endOfYear()->toDateString())  // Default to end of current year
 		)->toArray();
 	}
 
