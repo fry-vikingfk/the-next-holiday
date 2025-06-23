@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\OpenHolidayApi\CountryRepository;
 use App\Repositories\OpenHolidayApi\HolidayRepository;
+use App\Repositories\Contracts\CountryRepositoryInterface;
 use App\Repositories\Contracts\HolidayRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +16,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(HolidayRepositoryInterface::class, HolidayRepository::class);
+        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class
+        );
     }
 
     /**

@@ -77,7 +77,7 @@ class OpenHolidaysApiService
         }
     }
 
-    public function getCountries(string $languageIsoCode = ''): ?Collection 
+    public function getCountries(?string $languageIsoCode = ''): ?Collection 
     {
         try {
             $query = $languageIsoCode ? ['languageIsoCode' => $languageIsoCode] : [];

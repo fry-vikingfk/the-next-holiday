@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CatchExceptions;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\GetCountryListController;
 use App\Http\Controllers\GetPublicHolidayController;
 use App\Http\Controllers\GetSchoolHolidayController;
 
@@ -35,14 +36,11 @@ Route::controller(StateController::class)
 });
 
 
-Route::controller(CountryController::class)
+Route::controller(GetCountryListController::class)
     ->prefix('countries')
     ->as('countries.')
     ->middleware(CatchExceptions::class)
     ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/{country}', 'show')->name('show');
-        Route::post('/', 'store')->name('store');
-        Route::patch('/{country}', 'update')->name('update');
-        Route::delete('/{country}', 'destroy')->name('destroy');
+        Route::get('/', '__invoke')
+            ->name('country.list');
 });
