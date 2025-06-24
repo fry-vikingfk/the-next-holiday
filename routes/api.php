@@ -6,6 +6,7 @@ use App\Http\Middleware\CatchExceptions;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\GetCountryListController;
+use App\Http\Controllers\GetSubdivisionsController;
 use App\Http\Controllers\GetPublicHolidayController;
 use App\Http\Controllers\GetSchoolHolidayController;
 
@@ -35,7 +36,6 @@ Route::controller(StateController::class)
         Route::delete('/{state}', 'destroy')->name('destroy');
 });
 
-
 Route::controller(GetCountryListController::class)
     ->prefix('countries')
     ->as('countries.')
@@ -43,4 +43,13 @@ Route::controller(GetCountryListController::class)
     ->group(function () {
         Route::get('/', '__invoke')
             ->name('country.list');
+});
+
+Route::controller(GetSubdivisionsController::class)
+    ->prefix('subdivisions')
+    ->as('subdivisions.')
+    ->middleware(CatchExceptions::class)
+    ->group(function () {
+        Route::get('/', '__invoke')
+            ->name('subdivision.list');
 });

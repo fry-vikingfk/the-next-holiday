@@ -64,7 +64,7 @@
         #mainHoliday {
             font-family: 'Anton', sans-serif;
             font-size: 3.5rem;
-            color:rgb(151, 15, 15);
+            color: rgb(151, 15, 15);
             text-align: center;
             margin-top: 8rem;
             margin-bottom: 0.3rem;
@@ -110,13 +110,17 @@
 <body>
 
     <div class="topbar">
-        <h1>Next Public Holidays</h1>
+        <h1>Next Holidays</h1>
         <div class="dropdowns">
             <select id="countrySelect"></select>
             <select id="languageSelect">
                 <option value="EN">English</option>
                 <option value="ES">Español</option>
                 <option value="DE">Deutsch</option>
+            </select>
+            <select id="typeSelect">
+                <option value="public">Public</option>
+                <option value="school">School</option>
             </select>
         </div>
     </div>
@@ -128,9 +132,11 @@
     <script type="module">
         let country = 'DE';
         let language = 'EN';
+        let type = 'public';
 
         const countrySelect = document.getElementById('countrySelect');
         const languageSelect = document.getElementById('languageSelect');
+        const typeSelect = document.getElementById('typeSelect');
         const mainHoliday = document.getElementById('mainHoliday');
         const mainType = document.getElementById('mainType');
         const otherHolidays = document.getElementById('otherHolidays');
@@ -149,7 +155,7 @@
 
         const loadHolidays = async () => {
             try {
-                const res = await fetch(`/api/holidays/public?countryIsoCode=${country}&languageIsoCode=${language}&perPage=100`);
+                const res = await fetch(`/api/holidays/${type}?countryIsoCode=${country}&languageIsoCode=${language}&perPage=100`);
                 const { data = [] } = await res.json();
 
                 if (data.length) {
@@ -188,6 +194,11 @@
 
         countrySelect.addEventListener('change', (e) => {
             country = e.target.value;
+            loadHolidays();
+        });
+
+        typeSelect.addEventListener('change', (e) => {
+            type = e.target.value;
             loadHolidays();
         });
 

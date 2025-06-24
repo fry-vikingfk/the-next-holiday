@@ -93,4 +93,26 @@ class OpenHolidaysApiService
             return null;
         }
     }
+
+    public function getSubdivisions(
+        string $countryIsoCode, 
+        ?string $languageIsoCode = null
+    ): ?Collection 
+    {
+        try {
+            $response = $this->client->get("Subdivisions", [
+                'query' => [
+                    'countryIsoCode' => $countryIsoCode,
+                    'languageIsoCode' => $languageIsoCode,
+                ],
+            ]);
+
+            return collect(json_decode($response->getBody()->getContents()));
+
+        } catch (GuzzleException $e) {
+            Log::error("Failed to fetch subdivisions for {$countryIsoCode}: " . $e->getMessage());
+
+            return null;
+        }
+    }
 }
