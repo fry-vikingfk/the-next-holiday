@@ -32,7 +32,7 @@
         }
 
         .topbar h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -113,6 +113,7 @@
         <h1>Next Holidays</h1>
         <div class="dropdowns">
             <select id="countrySelect"></select>
+            <select id="subdivisionSelect" style="display:none"></select>
             <select id="languageSelect">
                 <option value="EN">English</option>
                 <option value="ES">Español</option>
@@ -133,14 +134,17 @@
         let country = 'DE';
         let language = 'EN';
         let type = 'public';
+        let subdivision = null;
 
         const countrySelect = document.getElementById('countrySelect');
+        const subdivisionSelect = document.getElementById('subdivisionSelect');
         const languageSelect = document.getElementById('languageSelect');
         const typeSelect = document.getElementById('typeSelect');
         const mainHoliday = document.getElementById('mainHoliday');
         const mainType = document.getElementById('mainType');
         const otherHolidays = document.getElementById('otherHolidays');
 
+        // Load countries
         const loadCountries = async () => {
             try {
                 const { data = [] } = await fetch(`/api/countries?languageIsoCode=${language}`).then(r => r.json());
@@ -153,20 +157,45 @@
             }
         };
 
+        // Load subdivisions/regions for selected country
+        const loadSubdivisions = async () => {
+            subdivision = null; // Reset current selection
+            subdivisionSelect.style.display = 'none';
+            subdivisionSelect.innerHTML = '';
+
+            try {
+                const { data = [] } = await fetch(`/api/subdivisions?countryIsoCode=${country}&languageIsoCode=${language}`).then(r => r.json());
+                if (data.length > 0) {
+                    subdivisionSelect.innerHTML =
+                        `<option value="">All regions</option>` +
+                        data.map(sub => {
+                            const name = sub.name.find(n => n.language === language)?.text ?? sub.name[0].text;
+                            return `<option value="${sub.code}">${name}</option>`;
+                        }).join('');
+                    subdivisionSelect.style.display = '';
+                }
+            } catch (err) {
+                console.error('Error loading subdivisions', err);
+            }
+        };
+
+        // Load holidays, considering current selections
         const loadHolidays = async () => {
             try {
-                const res = await fetch(`/api/holidays/${type}?countryIsoCode=${country}&languageIsoCode=${language}&perPage=100`);
+                let url = `/api/holidays/${type}?countryIsoCode=${country}&languageIsoCode=${language}&perPage=100`;
+                if (subdivision) {
+                    url += `&subdivisionCode=${subdivision}`;
+                }
+                const res = await fetch(url);
                 const { data = [] } = await res.json();
 
                 if (data.length) {
                     const [first, ...rest] = data;
-
                     mainHoliday.innerText = first.name?.[0]?.text?.toUpperCase() ?? 'UNNAMED';
                     mainType.innerHTML = `
                         ${first.type?.toUpperCase() ?? ''}
                         <br><small>${first.startDate ?? ''}</small>
                     `;
-
                     otherHolidays.innerHTML = rest.map(({ name, startDate }) => `
                         <div>
                             ${name?.[0]?.text ?? 'Unnamed'}
@@ -186,14 +215,17 @@
             }
         };
 
+        // Event listeners
         languageSelect.addEventListener('change', (e) => {
             language = e.target.value;
             loadCountries();
+            loadSubdivisions();
             loadHolidays();
         });
 
         countrySelect.addEventListener('change', (e) => {
             country = e.target.value;
+            loadSubdivisions();
             loadHolidays();
         });
 
@@ -202,7 +234,16 @@
             loadHolidays();
         });
 
-        loadCountries().then(loadHolidays);
+        subdivisionSelect.addEventListener('change', (e) => {
+            subdivision = e.target.value || null;
+            loadHolidays();
+        });
+
+        // Initial load
+        loadCountries().then(() => {
+            loadSubdivisions();
+            loadHolidays();
+        });
     </script>
 </body>
 </html>

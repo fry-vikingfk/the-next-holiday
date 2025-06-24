@@ -16,10 +16,8 @@ class GetSubdivisionsController extends Controller
 
     public function __invoke(SubdivisionListRequest $request)
     {
-
-        $subdivisions = $this->subdivisionRepository->getSubdivisionsList($request);
-
-        return SubdivisionResource::collection($subdivisions)
-            ->additional(['message' => 'List of subdivisions']);
+        return SubdivisionResource::collection(
+            $this->subdivisionRepository->getSubdivisionsList($request)
+        )->additional(['message' => 'List of subdivisions']);
     }
 }
