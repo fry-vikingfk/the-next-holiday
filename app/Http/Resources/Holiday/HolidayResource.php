@@ -3,8 +3,7 @@
 namespace App\Http\Resources\Holiday;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\StateResource;
-use App\Http\Resources\Country\CountryResource;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class HolidayResource extends JsonResource
@@ -19,8 +18,8 @@ class HolidayResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
+            'startDate' => Carbon::parse($this->startDate)->format('d.m.Y'),
+            'endDate' => Carbon::parse($this->endDate)->format('d.m.Y'),
             'type' => $this->type,
             'regionalScope' => $this->regionalScope,
             'temporalScope' => $this->temporalScope,

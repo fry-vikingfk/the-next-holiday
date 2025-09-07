@@ -24,8 +24,8 @@ class GetPublicHolidayController extends Controller
             $request->validated('perPage'),
             $request->validated('page')
         );
-
+      
         return HolidayResource::collection($paginated)
-            ->additional(['message' => 'List of holidays']);
+            ->additional(['message' => 'List of public holidays']);
     }
 }

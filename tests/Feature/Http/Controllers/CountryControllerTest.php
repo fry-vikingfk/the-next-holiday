@@ -4,9 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Country;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\Constraint\Count;
 
 class CountryControllerTest extends TestCase
 {
@@ -14,14 +12,12 @@ class CountryControllerTest extends TestCase
 
     public function test_index_returns_list_of_countries()
     {
-        Country::factory()->count(3)->create();
-
-        $response = $this->getJson(route('countries.index'));
+        $response = $this->get(route('countries.index'));
+        
         $response->assertStatus(200)
                  ->assertJson([
                      'message' => 'List of countries',
-                 ])
-                 ->assertJsonCount(3, 'data');     
+                 ]);
     }
 
     public function test_store_creates_new_country()

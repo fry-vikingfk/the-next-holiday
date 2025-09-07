@@ -2,27 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
+use App\Http\Resources\Country\CountryResource;
+use App\Http\Requests\Country\CountryListRequest;
 use App\Http\Requests\Country\StoreCountryRequest;
 use App\Http\Requests\Country\UpdateCountryRequest;
-use App\Http\Resources\Country\CountryResource;
-use App\Models\Country;
+use App\Http\Resources\Country\CountryListResource;
+use App\Repositories\Contracts\CountryRepositoryInterface;
 
 class CountryController extends Controller
 {
-    public function __construct()
-    {
-        
-    }
+    public function __construct(
+        private readonly CountryRepositoryInterface $countryRepository
+    )
+    {}
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CountryListRequest $request)
     {
         return response()->json([
             'message' => 'List of countries',
-            'data' => CountryResource::collection(
-                Country::with(['states', 'states.holidays']
-                )->paginate(10)),
+            'data' => CountryListResource::collection(
+                $this->countryRepository->getCountryList(
+                    $request->validated('languageIsoCode')
+                )
+            ),
         ])->setStatusCode(200);
     }
 

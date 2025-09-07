@@ -38,27 +38,16 @@ class HolidaySearchRequest extends FormRequest
         ];
     }
 
-    
     protected function prepareForValidation(): void
     {
-        $languageIsoCode = strtoupper($this->input('languageIsoCode', self::DEFAULT_LANGUAGE));
-        $countryIsoCode = strtoupper($this->input('countryIsoCode', self::DEFAULT_COUNTRY));
-        $subdivisionCode = strtoupper($this->input('subdivisionCode', self::DEFAULT_SUBDIVISION));
-        $startDate = $this->input('validFrom', Carbon::now()->toDateString());
-        $endDate = $this->input('validTo', Carbon::now()->endOfYear()->toDateString());
-
-          // Pagination defaults
-        $page = (int) $this->input('page', 1);
-        $perPage = (int) $this->input('perPage', self::DEFAULT_PER_PAGE);
-
         $this->merge([
-            'languageIsoCode' => $languageIsoCode,
-            'countryIsoCode' => $countryIsoCode,
-            'subdivisionCode' => $subdivisionCode,
-            'validFrom' => $startDate,
-            'validTo' => $endDate,
-            'page' => $page,
-            'perPage' => $perPage,
+            'languageIsoCode' => strtoupper($this->input('languageIsoCode', self::DEFAULT_LANGUAGE)),
+            'countryIsoCode' => strtoupper($this->input('countryIsoCode', self::DEFAULT_COUNTRY)),
+            'subdivisionCode' => strtoupper($this->input('subdivisionCode', self::DEFAULT_SUBDIVISION)),
+            'validFrom' => $this->input('validFrom', Carbon::now()->toDateString()),
+            'validTo' => $this->input('validTo', Carbon::now()->endOfYear()->toDateString()),
+            'page' => (int) $this->input('page', 1),
+            'perPage' => (int) $this->input('perPage', self::DEFAULT_PER_PAGE),
         ]);
     }
 }

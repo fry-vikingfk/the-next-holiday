@@ -8,5 +8,6 @@ use App\Http\Requests\Holiday\HolidaySearchRequest;
 interface HolidayRepositoryInterface
 {
     public function getPublicHolidays(HolidaySearchRequest $request): Collection;
+    
     public function getSchoolHolidays(HolidaySearchRequest $request): Collection;
 }
