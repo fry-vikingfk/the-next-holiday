@@ -36,13 +36,16 @@ Route::controller(StateController::class)
         Route::delete('/{state}', 'destroy')->name('destroy');
 });
 
-Route::controller(GetCountryListController::class)
+Route::controller(CountryController::class)
     ->prefix('countries')
     ->as('countries.')
     ->middleware(CatchExceptions::class)
     ->group(function () {
-        Route::get('/', '__invoke')
-            ->name('country.list');
+        Route::get('/', 'index')->name('index');
+        Route::get('/{country}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::patch('/{country}', 'update')->name('update');
+        Route::delete('/{country}', 'destroy')->name('destroy');
 });
 
 Route::controller(GetSubdivisionsController::class)
@@ -51,5 +54,5 @@ Route::controller(GetSubdivisionsController::class)
     ->middleware(CatchExceptions::class)
     ->group(function () {
         Route::get('/', '__invoke')
-            ->name('subdivision.list');
+            ->name('list');
 });
