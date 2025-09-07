@@ -13,7 +13,7 @@ class GetPublicHolidayControllerTest extends TestCase
         $response = $this->get('/api/holidays/public');
         $response->assertStatus(200)
         ->assertJson([
-            'message' => 'List of holidays',
+            'message' => 'List of public holidays',
         ])
         ->assertJsonStructure([
             'message',
@@ -100,7 +100,7 @@ class GetPublicHolidayControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJson([
-                'message' => 'List of holidays',
+                'message' => 'List of public holidays',
                 'data' => [],
             ]);
     }
