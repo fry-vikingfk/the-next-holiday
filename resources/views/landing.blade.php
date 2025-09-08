@@ -135,6 +135,7 @@
         let language = 'EN';
         let type = 'public';
         let subdivision = null;
+        let hasSubdivisions = false;
 
         const countrySelect = document.getElementById('countrySelect');
         const subdivisionSelect = document.getElementById('subdivisionSelect');
@@ -162,12 +163,15 @@
             subdivision = null; // Reset current selection
             subdivisionSelect.style.display = 'none';
             subdivisionSelect.innerHTML = '';
+            hasSubdivisions = false;
 
             try {
                 const { data = [] } = await fetch(`/api/subdivisions?countryIsoCode=${country}&languageIsoCode=${language}`).then(r => r.json());
-                if (data.length > 0) {
+                hasSubdivisions = data.length > 0;
+
+                if (hasSubdivisions) {
                     subdivisionSelect.innerHTML =
-                        `<option value="">All regions</option>` +
+                        (type === 'public' ? `<option value="">All regions</option>` : '') +
                         data.map(sub => {
                             const name = sub.name.find(n => n.language === language)?.text ?? sub.name[0].text;
                             return `<option value="${sub.code}">${name}</option>`;
@@ -182,10 +186,19 @@
         // Load holidays, considering current selections
         const loadHolidays = async () => {
             try {
+                const isSchool = type === 'school';
+                if (isSchool && hasSubdivisions && !subdivision) {
+                    mainHoliday.innerText = 'Please select a region for school holidays.';
+                    mainType.innerHTML = '';
+                    otherHolidays.innerHTML = '';
+                    return;
+                }
+
                 let url = `/api/holidays/${type}?countryIsoCode=${country}&languageIsoCode=${language}&perPage=100`;
                 if (subdivision) {
                     url += `&subdivisionCode=${subdivision}`;
                 }
+
                 const res = await fetch(url);
                 const { data = [] } = await res.json();
 
