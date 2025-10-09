@@ -346,33 +346,45 @@
 <body>
     <div class="container">
         <div class="topbar">
-            <h1>Next Holidays</h1>
+            <h1 style="cursor: pointer;">Next Holidays</h1>
             <div class="dropdowns">
                 <select id="countrySelect"></select>
                 <select id="subdivisionSelect" style="display:none"></select>
                 <select id="languageSelect">
-                    <option value="EN">English</option>
-                    <option value="ES">Español</option>
-                    <option value="DE">Deutsch</option>
+                    <option value="EN">{{ __('English') }}</option>
+                    <option value="ES">{{ __('Español') }}</option>
+                    <option value="DE">{{ __('Deutsch') }}</option>
                 </select>
                 <select id="typeSelect">
-                    <option value="public">Public</option>
-                    <option value="school">School</option>
+                    <option value="public">{{ __('Public') }}</option>
+                    <option value="school">{{ __('School') }}</option>
                 </select>
             </div>
         </div>
 
         <div class="hero-card">
-            <div id="mainHoliday"><span class="loading">Loading...</span></div>
+            <div id="mainHoliday"><span class="loading">{{ __('Loading...') }}</span></div>
             <div id="mainType"></div>
         </div>
 
-        <div class="section-title" id="upcomingTitle" style="display:none">Upcoming Holidays</div>
+        <div class="section-title" id="upcomingTitle" style="display:none">{{ __('Upcoming Holidays') }}</div>
         <div class="others" id="otherHolidays"></div>
     </div>
 
     <script type="module">
-        let country = 'DE';
+        // Load translations
+        const translations = {
+            EN: @json(json_decode(file_get_contents(base_path('lang/en.json')), true)),
+            ES: @json(json_decode(file_get_contents(base_path('lang/es.json')), true)),
+            DE: @json(json_decode(file_get_contents(base_path('lang/de.json')), true))
+        };
+
+        // Translation helper function
+        const __ = (key) => {
+            return translations[language]?.[key] ?? key;
+        };
+
+        let country = 'IE';
         let language = 'EN';
         let type = 'public';
         let subdivision = null;
@@ -386,6 +398,27 @@
         const mainType = document.getElementById('mainType');
         const otherHolidays = document.getElementById('otherHolidays');
         const upcomingTitle = document.getElementById('upcomingTitle');
+
+        // Update UI texts based on current language
+        const updateUITexts = () => {
+            // Update page title (not the h1, that's the app name)
+            document.title = __('Upcoming Holidays');
+            upcomingTitle.innerText = __('Upcoming Holidays');
+
+            // Update language select options
+            languageSelect.options[0].text = __('English');
+            languageSelect.options[1].text = __('Español');
+            languageSelect.options[2].text = __('Deutsch');
+
+            // Update type select options
+            typeSelect.options[0].text = __('Public');
+            typeSelect.options[1].text = __('School');
+
+            // Reload subdivisions to update "All regions" text if visible
+            if (hasSubdivisions && subdivisionSelect.style.display !== 'none') {
+                loadSubdivisions(true);
+            }
+        };
 
         // Load countries
         const loadCountries = async () => {
@@ -414,7 +447,7 @@
 
                 if (hasSubdivisions) {
                     subdivisionSelect.innerHTML =
-                        (type === 'public' ? `<option value="">All regions</option>` : '') +
+                        (type === 'public' ? `<option value="">${__('All regions')}</option>` : '') +
                         data.map(sub => {
                             const name = sub.name.find(n => n.language === language)?.text ?? sub.name[0].text;
                             const selected = previousSubdivision && sub.code === previousSubdivision ? 'selected' : '';
@@ -436,14 +469,14 @@
         const loadHolidays = async () => {
             try {
                 // Show loading state
-                mainHoliday.innerHTML = '<span class="loading">Loading...</span>';
+                mainHoliday.innerHTML = `<span class="loading">${__('Loading...')}</span>`;
                 mainType.innerHTML = '';
                 otherHolidays.innerHTML = '';
                 upcomingTitle.style.display = 'none';
 
                 const isSchool = type === 'school';
                 if (isSchool && hasSubdivisions && !subdivision) {
-                    mainHoliday.innerText = 'Please select a region for school holidays.';
+                    mainHoliday.innerText = __('Please select a region for school holidays.');
                     mainType.innerHTML = '';
                     otherHolidays.innerHTML = '';
                     return;
@@ -459,7 +492,7 @@
 
                 if (data.length) {
                     const [first, ...rest] = data;
-                    mainHoliday.innerText = first.name?.[0]?.text?.toUpperCase() ?? 'UNNAMED';
+                    mainHoliday.innerText = first.name?.[0]?.text?.toUpperCase() ?? __('UNNAMED');
                     mainType.innerHTML = `
                         ${first.type?.toUpperCase() ?? ''}
                         <small>${first.startDate ?? ''}</small>
@@ -469,27 +502,33 @@
                         upcomingTitle.style.display = 'block';
                         otherHolidays.innerHTML = rest.map(({ name, startDate }) => `
                             <div class="holiday-card">
-                                <div class="holiday-card-name">${name?.[0]?.text ?? 'Unnamed'}</div>
+                                <div class="holiday-card-name">${name?.[0]?.text ?? __('Unnamed')}</div>
                                 <div class="holiday-card-date">${startDate ?? ''}</div>
                             </div>
                         `).join('');
                     }
                 } else {
-                    mainHoliday.innerText = 'No holidays found.';
+                    mainHoliday.innerText = __('No holidays found.');
                     mainType.innerHTML = '';
                     otherHolidays.innerHTML = '';
                 }
             } catch (error) {
                 console.error('Error fetching holidays:', error);
-                mainHoliday.innerText = 'Error loading holidays.';
+                mainHoliday.innerText = __('Error loading holidays.');
                 mainType.innerHTML = '';
                 otherHolidays.innerHTML = '';
             }
         };
 
         // Event listeners
+        // Click on h1 to refresh page
+        document.querySelector('.topbar h1').addEventListener('click', () => {
+            window.location.reload();
+        });
+
         languageSelect.addEventListener('change', async (e) => {
             language = e.target.value;
+            updateUITexts(); // Update all UI texts to new language
             loadCountries();
             await loadSubdivisions(true); // Preserve subdivision selection when changing language
             loadHolidays();
@@ -512,6 +551,7 @@
         });
 
         // Initial load
+        updateUITexts(); // Set initial UI texts
         loadCountries().then(() => {
             loadSubdivisions();
             loadHolidays();
