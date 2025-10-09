@@ -37,7 +37,7 @@ class HolidayRepository implements HolidayRepositoryInterface
 		$items = $this->service->getSchoolHolidays(
 			countryIsoCode:  $request->validated('countryIsoCode'),
 			languageIsoCode: $request->validated('languageIsoCode'),
-			subdivisionCode: $subdivision,   // null => all regions
+			subdivisionCode: $subdivision,
 			validFrom:       $request->validated('validFrom'),
 			validTo:         $request->validated('validTo'),
 		) ?? collect();
