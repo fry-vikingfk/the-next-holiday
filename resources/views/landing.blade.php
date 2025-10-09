@@ -35,8 +35,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(233, 150, 122, 0.15), transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(205, 127, 98, 0.15), transparent 50%);
+            background: radial-gradient(circle at 20% 50%, rgba(94, 234, 212, 0.15), transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.15), transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -101,7 +101,7 @@
             font-size: 2.5rem;
             margin: 0;
             font-weight: 700;
-            background: linear-gradient(135deg, #E9967A 0%, #CD7F62 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -141,8 +141,8 @@
         .dropdowns select:focus {
             outline: none;
             background: #ffffff;
-            border-color: #E9967A;
-            box-shadow: 0 0 0 3px rgba(233, 150, 122, 0.15);
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
 
         .dropdowns select option {
@@ -151,12 +151,12 @@
         }
 
         .hero-card {
-            background: linear-gradient(135deg, #F4A889 0%, #E9967A 100%);
+            background: linear-gradient(135deg, #5eead4 0%, #14b8a6 100%);
             border-radius: 30px;
             padding: 4rem 3rem;
             margin-bottom: 3rem;
-            box-shadow: 0 10px 40px rgba(233, 150, 122, 0.3);
-            border: 1px solid rgba(233, 150, 122, 0.2);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.3);
+            border: 1px solid rgba(20, 184, 166, 0.2);
             text-align: center;
             animation: scaleIn 0.6s ease-out 0.2s both;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -164,7 +164,7 @@
 
         .hero-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(233, 150, 122, 0.4);
+            box-shadow: 0 15px 50px rgba(20, 184, 166, 0.4);
         }
 
         #mainHoliday {
@@ -235,16 +235,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(233, 150, 122, 0.05) 0%, rgba(205, 127, 98, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
         .holiday-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(233, 150, 122, 0.2);
+            box-shadow: 0 8px 30px rgba(20, 184, 166, 0.2);
             background: #ffffff;
-            border-color: #E9967A;
+            border-color: #14b8a6;
         }
 
         .holiday-card:hover::before {
