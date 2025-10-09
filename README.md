@@ -1,60 +1,141 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# The Next Holiday
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel application that displays upcoming public and school holidays using the [OpenHolidays API](https://openholidaysapi.org).
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- View upcoming public holidays by country
+- View school holidays by country and region
+- Multi-language support (English, Spanish, German)
+- Interactive web interface with country/region selection
+- RESTful API for holiday data
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP ^8.2
+- Composer
+- Node.js & NPM
+- Docker & Docker Compose (for Laravel Sail)
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Using Laravel Sail (Docker)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Clone the repository
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Install dependencies and initialize:
+```bash
+make install
+```
 
-## Laravel Sponsors
+This will:
+- Install Composer dependencies (if not already installed)
+- Start Docker containers
+- Reset database with migrations and seeders
+- Run tests
+- Populate holidays data
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Manual Installation
 
-### Premium Partners
+1. Clone the repository
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+2. Install dependencies:
+```bash
+composer install
+npm install
+```
 
-## Contributing
+3. Set up environment:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Start the application:
+```bash
+composer dev
+```
 
-## Code of Conduct
+This starts the Laravel server, queue worker, logs viewer, and Vite dev server concurrently.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Make Commands
 
-## Security Vulnerabilities
+The project includes a Makefile for common tasks using Laravel Sail:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+make up                    # Start Docker containers
+make down                  # Stop Docker containers
+make db-reset              # Reset database with fresh migrations and seeds
+make clear-cache           # Clear all Laravel caches
+make test                  # Run tests with coverage
+make test-specific filter=test_name  # Run specific test
+make install               # Full installation (composer + init)
+make init                  # Initialize project (down, db-reset, test)
+```
+
+## Testing
+
+Run all tests with coverage:
+```bash
+make test
+```
+
+Run specific test:
+```bash
+make test-specific filter=test_can_get_public_holidays
+```
+
+Without Make:
+```bash
+composer test
+php artisan test tests/Feature/Http/Controllers/GetPublicHolidayControllerTest.php
+```
+
+## Code Style
+
+Fix code style issues:
+```bash
+./vendor/bin/pint
+```
+
+Check style without fixing:
+```bash
+./vendor/bin/pint --test
+```
+
+## API Endpoints
+
+- `GET /api/holidays/public` - Get public holidays
+- `GET /api/holidays/school` - Get school holidays
+- `GET /api/countries` - List available countries
+- `GET /api/subdivisions` - List subdivisions/regions for a country
+
+### Query Parameters
+
+**Holidays endpoints:**
+- `countryIsoCode` (required) - ISO country code (e.g., "DE", "US")
+- `languageIsoCode` (required) - ISO language code (e.g., "EN", "ES", "DE")
+- `subdivisionCode` (optional for public, often required for school) - Region code
+- `validFrom` (required) - Start date (YYYY-MM-DD)
+- `validTo` (required) - End date (YYYY-MM-DD)
+
+**Countries endpoint:**
+- `languageIsoCode` (optional) - Localize country names
+
+**Subdivisions endpoint:**
+- `countryIsoCode` (required) - Country to get subdivisions for
+- `languageIsoCode` (optional) - Localize subdivision names
+
+## Architecture
+
+The application uses a Repository pattern to abstract data fetching from the OpenHolidays API:
+
+- **Service Layer** (`OpenHolidaysApiService`) - Handles HTTP requests to external API
+- **Repository Layer** - Business logic and data transformation
+- **Controllers** - Single-action controllers for API endpoints
+- **Form Requests** - Validation for all API requests
+
+See [CLAUDE.md](CLAUDE.md) for detailed architecture documentation.
 
 ## License
 
