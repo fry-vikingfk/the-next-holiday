@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Nästa Helgdagar",
+    "upcoming-holidays": "Kommande Helgdagar",
+    "english": "Engelska",
+    "espanol": "Spanska",
+    "deutsch": "Tyska",
+    "public": "Offentliga",
+    "school": "Skollov",
+    "loading": "Laddar...",
+    "all-regions": "Alla regioner",
+    "please-select-a-region-for-school-holidays": "Vänligen välj en region för skollov.",
+    "unnamed": "NAMNLÖS",
+    "unnamed-2": "Namnlös",
+    "no-holidays-found": "Inga helgdagar hittades.",
+    "error-loading-holidays": "Fel vid laddning av helgdagar."
+}

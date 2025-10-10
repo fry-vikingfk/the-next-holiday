@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Következő Ünnepek",
+    "upcoming-holidays": "Közelgő Ünnepek",
+    "english": "Angol",
+    "espanol": "Spanyol",
+    "deutsch": "Német",
+    "public": "Hivatalos",
+    "school": "Iskolai",
+    "loading": "Betöltés...",
+    "all-regions": "Minden régió",
+    "please-select-a-region-for-school-holidays": "Kérjük, válasszon régiót az iskolai szünetekhez.",
+    "unnamed": "NÉVTELEN",
+    "unnamed-1": "Névtelen",
+    "no-holidays-found": "Nem található ünnep.",
+    "error-loading-holidays": "Hiba az ünnepek betöltése során."
+}

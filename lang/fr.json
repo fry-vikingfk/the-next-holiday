@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Prochains Jours Fériés",
+    "upcoming-holidays": "Prochains Jours Fériés",
+    "english": "Anglais",
+    "espanol": "Espagnol",
+    "deutsch": "Allemand",
+    "public": "Public",
+    "school": "Scolaire",
+    "loading": "Chargement...",
+    "all-regions": "Toutes les régions",
+    "please-select-a-region-for-school-holidays": "Veuillez sélectionner une région pour les vacances scolaires.",
+    "unnamed": "SANS NOM",
+    "unnamed-2": "Sans nom",
+    "no-holidays-found": "Aucun jour férié trouvé.",
+    "error-loading-holidays": "Erreur lors du chargement des jours fériés."
+}

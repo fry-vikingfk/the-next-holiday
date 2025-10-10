@@ -6,6 +6,7 @@ use App\Http\Middleware\CatchExceptions;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\GetCountryListController;
+use App\Http\Controllers\GetLanguagesController;
 use App\Http\Controllers\GetSubdivisionsController;
 use App\Http\Controllers\GetPublicHolidayController;
 use App\Http\Controllers\GetSchoolHolidayController;
@@ -51,6 +52,15 @@ Route::controller(CountryController::class)
 Route::controller(GetSubdivisionsController::class)
     ->prefix('subdivisions')
     ->as('subdivisions.')
+    ->middleware(CatchExceptions::class)
+    ->group(function () {
+        Route::get('/', '__invoke')
+            ->name('list');
+});
+
+Route::controller(GetLanguagesController::class)
+    ->prefix('languages')
+    ->as('languages.')
     ->middleware(CatchExceptions::class)
     ->group(function () {
         Route::get('/', '__invoke')
