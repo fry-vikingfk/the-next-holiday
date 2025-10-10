@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Nächste Feiertage",
+    "upcoming-holidays": "Kommende Feiertage",
+    "english": "Englisch",
+    "espanol": "Spanisch",
+    "deutsch": "Deutsch",
+    "public": "Öffentlich",
+    "school": "Schule",
+    "loading": "Wird geladen...",
+    "all-regions": "Alle Regionen",
+    "please-select-a-region-for-school-holidays": "Bitte wählen Sie eine Region für Schulferien.",
+    "unnamed": "UNBENANNT",
+    "unnamed-1": "Unbenannt",
+    "no-holidays-found": "Keine Feiertage gefunden.",
+    "error-loading-holidays": "Fehler beim Laden der Feiertage."
+}

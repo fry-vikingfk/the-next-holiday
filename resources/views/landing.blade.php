@@ -346,33 +346,40 @@
 <body>
     <div class="container">
         <div class="topbar">
-            <h1>Next Holidays</h1>
+            <h1 style="cursor: pointer;">Next Holidays</h1>
             <div class="dropdowns">
                 <select id="countrySelect"></select>
                 <select id="subdivisionSelect" style="display:none"></select>
-                <select id="languageSelect">
-                    <option value="EN">English</option>
-                    <option value="ES">Español</option>
-                    <option value="DE">Deutsch</option>
-                </select>
+                <select id="languageSelect"></select>
                 <select id="typeSelect">
-                    <option value="public">Public</option>
-                    <option value="school">School</option>
+                    <option value="public">{{ __('public') }}</option>
+                    <option value="school">{{ __('school') }}</option>
                 </select>
             </div>
         </div>
 
         <div class="hero-card">
-            <div id="mainHoliday"><span class="loading">Loading...</span></div>
+            <div id="mainHoliday"><span class="loading">{{ __('loading') }}</span></div>
             <div id="mainType"></div>
         </div>
 
-        <div class="section-title" id="upcomingTitle" style="display:none">Upcoming Holidays</div>
+        <div class="section-title" id="upcomingTitle" style="display:none">{{ __('upcoming-holidays') }}</div>
         <div class="others" id="otherHolidays"></div>
     </div>
 
     <script type="module">
-        let country = 'DE';
+        // Load translations - dynamically load all language files
+        const translations = @json(collect(glob(base_path('lang/*.json')))->mapWithKeys(function($path) {
+            $lang = strtoupper(pathinfo($path, PATHINFO_FILENAME));
+            return [$lang => json_decode(file_get_contents($path), true)];
+        }));
+
+        // Translation helper function
+        const __ = (key) => {
+            return translations[language]?.[key] ?? key;
+        };
+
+        let country = 'IE';
         let language = 'EN';
         let type = 'public';
         let subdivision = null;
@@ -386,6 +393,40 @@
         const mainType = document.getElementById('mainType');
         const otherHolidays = document.getElementById('otherHolidays');
         const upcomingTitle = document.getElementById('upcomingTitle');
+
+        // Load languages
+        const loadLanguages = async () => {
+            try {
+                const { data = [] } = await fetch('/api/languages').then(r => r.json());
+                languageSelect.innerHTML = data.map(lang => {
+                    const name = lang.name.find(n => n.language === language)?.text ?? lang.name[0].text;
+                    return `<option value="${lang.isoCode}" ${lang.isoCode === language ? 'selected' : ''}>${name}</option>`;
+                }).join('');
+            } catch (err) {
+                console.error('Error loading languages', err);
+            }
+        };
+
+        // Update UI texts based on current language
+        const updateUITexts = () => {
+            // Update page title (not the h1, that's the app name)
+            document.title = __('upcoming-holidays');
+            upcomingTitle.innerText = __('upcoming-holidays');
+
+            // Update type select options while preserving selection
+            const currentType = typeSelect.value;
+            typeSelect.options[0].text = __('public');
+            typeSelect.options[1].text = __('school');
+            typeSelect.value = currentType; // Restore selection
+
+            // Reload subdivisions to update "All regions" text if visible
+            if (hasSubdivisions && subdivisionSelect.style.display !== 'none') {
+                loadSubdivisions(true);
+            }
+
+            // Reload languages to update language names in current language
+            loadLanguages();
+        };
 
         // Load countries
         const loadCountries = async () => {
@@ -414,7 +455,7 @@
 
                 if (hasSubdivisions) {
                     subdivisionSelect.innerHTML =
-                        (type === 'public' ? `<option value="">All regions</option>` : '') +
+                        (type === 'public' ? `<option value="">${__('all-regions')}</option>` : '') +
                         data.map(sub => {
                             const name = sub.name.find(n => n.language === language)?.text ?? sub.name[0].text;
                             const selected = previousSubdivision && sub.code === previousSubdivision ? 'selected' : '';
@@ -436,14 +477,14 @@
         const loadHolidays = async () => {
             try {
                 // Show loading state
-                mainHoliday.innerHTML = '<span class="loading">Loading...</span>';
+                mainHoliday.innerHTML = `<span class="loading">${__('loading')}</span>`;
                 mainType.innerHTML = '';
                 otherHolidays.innerHTML = '';
                 upcomingTitle.style.display = 'none';
 
                 const isSchool = type === 'school';
                 if (isSchool && hasSubdivisions && !subdivision) {
-                    mainHoliday.innerText = 'Please select a region for school holidays.';
+                    mainHoliday.innerText = __('please-select-a-region-for-school-holidays');
                     mainType.innerHTML = '';
                     otherHolidays.innerHTML = '';
                     return;
@@ -459,7 +500,7 @@
 
                 if (data.length) {
                     const [first, ...rest] = data;
-                    mainHoliday.innerText = first.name?.[0]?.text?.toUpperCase() ?? 'UNNAMED';
+                    mainHoliday.innerText = first.name?.[0]?.text?.toUpperCase() ?? __('unnamed');
                     mainType.innerHTML = `
                         ${first.type?.toUpperCase() ?? ''}
                         <small>${first.startDate ?? ''}</small>
@@ -469,27 +510,33 @@
                         upcomingTitle.style.display = 'block';
                         otherHolidays.innerHTML = rest.map(({ name, startDate }) => `
                             <div class="holiday-card">
-                                <div class="holiday-card-name">${name?.[0]?.text ?? 'Unnamed'}</div>
+                                <div class="holiday-card-name">${name?.[0]?.text ?? __('unnamed-2')}</div>
                                 <div class="holiday-card-date">${startDate ?? ''}</div>
                             </div>
                         `).join('');
                     }
                 } else {
-                    mainHoliday.innerText = 'No holidays found.';
+                    mainHoliday.innerText = __('no-holidays-found');
                     mainType.innerHTML = '';
                     otherHolidays.innerHTML = '';
                 }
             } catch (error) {
                 console.error('Error fetching holidays:', error);
-                mainHoliday.innerText = 'Error loading holidays.';
+                mainHoliday.innerText = __('error-loading-holidays');
                 mainType.innerHTML = '';
                 otherHolidays.innerHTML = '';
             }
         };
 
         // Event listeners
+        // Click on h1 to refresh page
+        document.querySelector('.topbar h1').addEventListener('click', () => {
+            window.location.reload();
+        });
+
         languageSelect.addEventListener('change', async (e) => {
             language = e.target.value;
+            updateUITexts(); // Update all UI texts to new language
             loadCountries();
             await loadSubdivisions(true); // Preserve subdivision selection when changing language
             loadHolidays();
@@ -512,9 +559,12 @@
         });
 
         // Initial load
-        loadCountries().then(() => {
-            loadSubdivisions();
-            loadHolidays();
+        loadLanguages().then(() => {
+            updateUITexts(); // Set initial UI texts
+            loadCountries().then(() => {
+                loadSubdivisions();
+                loadHolidays();
+            });
         });
     </script>
 </body>

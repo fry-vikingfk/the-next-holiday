@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class HolidaySearchRequest extends FormRequest
 {
     public const DEFAULT_LANGUAGE = 'en';
-    public const DEFAULT_COUNTRY = 'DE';
+    public const DEFAULT_COUNTRY = 'IE';
     public const DEFAULT_SUBDIVISION = '';
     public const DEFAULT_PER_PAGE = 4;
 
@@ -45,7 +45,7 @@ class HolidaySearchRequest extends FormRequest
             'countryIsoCode' => strtoupper($this->input('countryIsoCode', self::DEFAULT_COUNTRY)),
             'subdivisionCode' => strtoupper($this->input('subdivisionCode', self::DEFAULT_SUBDIVISION)),
             'validFrom' => $this->input('validFrom', Carbon::now()->toDateString()),
-            'validTo' => $this->input('validTo', Carbon::now()->endOfYear()->toDateString()),
+            'validTo' => $this->input('validTo', Carbon::now()->addMonth(6)->toDateString()),
             'page' => (int) $this->input('page', 1),
             'perPage' => (int) $this->input('perPage', self::DEFAULT_PER_PAGE),
         ]);

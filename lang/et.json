@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Järgmised Pühad",
+    "upcoming-holidays": "Tulevased Pühad",
+    "english": "Inglise",
+    "espanol": "Hispaania",
+    "deutsch": "Saksa",
+    "public": "Riiklikud",
+    "school": "Koolipuhkused",
+    "loading": "Laadimine...",
+    "all-regions": "Kõik piirkonnad",
+    "please-select-a-region-for-school-holidays": "Palun valige piirkond koolipuhkuste jaoks.",
+    "unnamed": "NIMETU",
+    "unnamed-2": "Nimetu",
+    "no-holidays-found": "Pühasid ei leitud.",
+    "error-loading-holidays": "Viga pühade laadimisel."
+}

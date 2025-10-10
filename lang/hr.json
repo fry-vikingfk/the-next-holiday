@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Sljedeći Praznici",
+    "upcoming-holidays": "Nadolazeći Praznici",
+    "english": "Engleski",
+    "espanol": "Španjolski",
+    "deutsch": "Njemački",
+    "public": "Javni",
+    "school": "Školski",
+    "loading": "Učitavanje...",
+    "all-regions": "Sve regije",
+    "please-select-a-region-for-school-holidays": "Molimo odaberite regiju za školske praznike.",
+    "unnamed": "BEZ IMENA",
+    "unnamed-2": "Bez imena",
+    "no-holidays-found": "Nisu pronađeni praznici.",
+    "error-loading-holidays": "Greška pri učitavanju praznika."
+}

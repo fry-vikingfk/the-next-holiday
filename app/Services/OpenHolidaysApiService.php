@@ -95,9 +95,9 @@ class OpenHolidaysApiService
     }
 
     public function getSubdivisions(
-        string $countryIsoCode, 
+        string $countryIsoCode,
         ?string $languageIsoCode = null
-    ): ?Collection 
+    ): ?Collection
     {
         try {
             $response = $this->client->get("Subdivisions", [
@@ -111,6 +111,20 @@ class OpenHolidaysApiService
 
         } catch (GuzzleException $e) {
             Log::error("Failed to fetch subdivisions for {$countryIsoCode}: " . $e->getMessage());
+
+            return null;
+        }
+    }
+
+    public function getLanguages(): ?Collection
+    {
+        try {
+            $response = $this->client->get('Languages');
+
+            return collect(json_decode($response->getBody()->getContents()));
+
+        } catch (GuzzleException $e) {
+            Log::error("Failed to fetch languages: " . $e->getMessage());
 
             return null;
         }
