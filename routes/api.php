@@ -31,9 +31,9 @@ Route::controller(StateController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index')->middleware('throttle:metadata');
         Route::get('/{state}', 'show')->name('show')->middleware('throttle:metadata');
-        Route::post('/', 'store')->name('store')->middleware('throttle:strict');
-        Route::patch('/{state}', 'update')->name('update')->middleware('throttle:strict');
-        Route::delete('/{state}', 'destroy')->name('destroy')->middleware('throttle:strict');
+        Route::post('/', 'store')->name('store')->middleware(['auth:sanctum', 'throttle:strict']);
+        Route::patch('/{state}', 'update')->name('update')->middleware(['auth:sanctum', 'throttle:strict']);
+        Route::delete('/{state}', 'destroy')->name('destroy')->middleware(['auth:sanctum', 'throttle:strict']);
     });
 
 Route::controller(CountryController::class)
@@ -43,9 +43,9 @@ Route::controller(CountryController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index')->middleware('throttle:metadata');
         Route::get('/{country}', 'show')->name('show')->middleware('throttle:metadata');
-        Route::post('/', 'store')->name('store')->middleware('throttle:strict');
-        Route::patch('/{country}', 'update')->name('update')->middleware('throttle:strict');
-        Route::delete('/{country}', 'destroy')->name('destroy')->middleware('throttle:strict');
+        Route::post('/', 'store')->name('store')->middleware(['auth:sanctum', 'throttle:strict']);
+        Route::patch('/{country}', 'update')->name('update')->middleware(['auth:sanctum', 'throttle:strict']);
+        Route::delete('/{country}', 'destroy')->name('destroy')->middleware(['auth:sanctum', 'throttle:strict']);
     });
 
 Route::controller(GetSubdivisionsController::class)
