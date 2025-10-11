@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\State;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Holiday extends Model
 {
@@ -16,11 +15,11 @@ class Holiday extends Model
         'name',
         'date',
         'state_id',
+        'country_id',
         'year',
         'note',
         'is_statutory',
     ];
-
 
     public function state()
     {
