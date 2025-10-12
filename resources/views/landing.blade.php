@@ -502,7 +502,7 @@
                     const [first, ...rest] = data;
                     mainHoliday.innerText = first.name?.[0]?.text?.toUpperCase() ?? __('unnamed');
                     mainType.innerHTML = `
-                        ${first.type?.toUpperCase() ?? ''}
+                        ${first.type ? __(first.type.toLowerCase()).toUpperCase() : ''}
                         <small>${first.startDate ?? ''}</small>
                     `;
 
