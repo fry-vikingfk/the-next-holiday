@@ -2,63 +2,179 @@
 
 namespace Tests\Feature\Security;
 
+use App\Models\Country;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class ErrorHandlingTest extends TestCase
 {
-    public function test_internal_server_errors_do_not_expose_sensitive_details(): void
-    {
-        // Attempt to access a route that will throw an exception
-        // We'll use a non-existent route to trigger a 404, but we want to test 500 errors
-        // For now, we'll just verify the error structure
+    use RefreshDatabase;
 
-        // This test verifies the error response structure doesn't include sensitive data
-        $this->assertTrue(true, 'Error handling middleware configured to not expose debug info');
+    public function test_validation_errors_return_structured_response(): void
+    {
+        // Test validation error response structure
+        $response = $this->getJson('/api/holidays/public?countryIsoCode=INVALID');
+
+        $response->assertStatus(422)
+            ->assertJsonStructure([
+                'message',
+                'errors' => [
+                    'countryIsoCode',
+                ],
+            ]);
+
+        // Verify the error message is helpful
+        $data = $response->json();
+        $this->assertEquals('The country iso code field format is invalid.', $data['errors']['countryIsoCode'][0]);
     }
 
-    public function test_error_response_does_not_contain_stack_trace(): void
+    public function test_validation_errors_do_not_expose_sensitive_data(): void
     {
-        // Test that even if an error occurs, no stack trace is exposed
-        // Make a request that could fail
-        $response = $this->getJson('/api/holidays/public?countryIsoCode=XX');
+        $response = $this->getJson('/api/holidays/public?countryIsoCode=TOOLONG');
 
-        // The response should not contain sensitive debugging information
         $responseData = $response->json();
 
-        $this->assertArrayNotHasKey('trace', $responseData ?? []);
-        $this->assertArrayNotHasKey('file', $responseData ?? []);
-        $this->assertArrayNotHasKey('line', $responseData ?? []);
-        $this->assertArrayNotHasKey('exception', $responseData ?? []);
+        // Should not contain stack traces or file paths
+        $this->assertArrayNotHasKey('trace', $responseData);
+        $this->assertArrayNotHasKey('file', $responseData);
+        $this->assertArrayNotHasKey('line', $responseData);
+        $this->assertArrayNotHasKey('exception', $responseData);
     }
 
-    public function test_error_response_has_generic_message(): void
+    public function test_missing_required_fields_return_validation_errors(): void
     {
-        // When internal errors occur, only generic messages should be shown
-        // We can't easily trigger a 500 error in tests, but we can verify
-        // that our middleware is properly configured
+        // School holidays endpoint has defaults, so test with invalid data instead
+        $response = $this->getJson('/api/holidays/school?countryIsoCode=TOOLONG');
 
-        $this->assertTrue(true, 'Error responses configured to show generic messages only');
+        $response->assertStatus(422)
+            ->assertJsonStructure([
+                'message',
+                'errors',
+            ]);
+
+        // Verify error structure contains field-specific errors
+        $data = $response->json();
+        $this->assertArrayHasKey('errors', $data);
+        $this->assertIsArray($data['errors']);
     }
 
-    public function test_validation_errors_are_still_detailed(): void
+    public function test_http_404_errors_have_clean_response(): void
     {
-        // Validation errors should still provide helpful feedback
-        $response = $this->postJson('/api/states', []);
-
-        // Should return validation errors (401 in this case due to auth, or 422 for validation)
-        $this->assertContains($response->status(), [401, 422]);
-    }
-
-    public function test_http_exceptions_show_appropriate_messages(): void
-    {
-        // 404 and other HTTP exceptions should show appropriate messages
-        $response = $this->getJson('/api/non-existent-route');
+        // Test a route that doesn't exist in API
+        $response = $this->getJson('/api/non-existent-endpoint');
 
         $response->assertStatus(404);
 
-        // The default Laravel 404 response may include trace in test environment
-        // But our CatchExceptions middleware only applies to routes wrapped with it
-        // We verify that routes with our middleware don't expose sensitive data
+        // In test environment, Laravel may include debug info for 404s outside API middleware
+        // We'll verify that API routes wrapped with CatchExceptions middleware don't expose data
+        // 404 responses in test mode may have different structure, so we just verify the status
         $this->assertEquals(404, $response->status());
+    }
+
+    public function test_unauthorized_errors_return_401(): void
+    {
+        $country = Country::factory()->create();
+
+        // Try to update without authentication
+        $response = $this->patchJson("/api/countries/{$country->id}", [
+            'code' => $country->code,
+            'name' => 'Updated Name',
+        ]);
+
+        $response->assertStatus(401);
+
+        $data = $response->json();
+        $this->assertArrayHasKey('message', $data);
+    }
+
+    public function test_forbidden_errors_return_403(): void
+    {
+        $regularUser = User::factory()->create(); // Not admin
+
+        // Try to create country without admin privileges
+        $response = $this->actingAs($regularUser, 'sanctum')
+            ->postJson('/api/countries', [
+                'code' => 'US',
+                'name' => 'United States',
+            ]);
+
+        $response->assertStatus(403);
+
+        $data = $response->json();
+        $this->assertArrayHasKey('message', $data);
+        $this->assertStringContainsString('authorized', strtolower($data['message']));
+    }
+
+    public function test_error_responses_never_expose_stack_traces(): void
+    {
+        // Test validation errors (which are handled by CatchExceptions middleware)
+        $endpoints = [
+            '/api/holidays/public?countryIsoCode=INVALID',
+            '/api/subdivisions?countryIsoCode=TOOLONG',
+        ];
+
+        foreach ($endpoints as $endpoint) {
+            $response = $this->getJson($endpoint);
+
+            $data = $response->json();
+
+            if ($data !== null) {
+                $this->assertArrayNotHasKey('trace', $data, "Endpoint {$endpoint} exposed trace");
+                $this->assertArrayNotHasKey('file', $data, "Endpoint {$endpoint} exposed file");
+                $this->assertArrayNotHasKey('line', $data, "Endpoint {$endpoint} exposed line");
+                $this->assertArrayNotHasKey('exception', $data, "Endpoint {$endpoint} exposed exception");
+            }
+        }
+    }
+
+    public function test_error_responses_have_consistent_structure(): void
+    {
+        // Validation error
+        $response = $this->getJson('/api/holidays/public?countryIsoCode=INVALID');
+        $response->assertJsonStructure(['message', 'errors']);
+
+        // Not found error
+        $response = $this->getJson('/api/countries/99999');
+        $response->assertStatus(404);
+
+        // Unauthorized error
+        $response = $this->postJson('/api/countries', ['code' => 'US']);
+        $response->assertStatus(401)
+            ->assertJsonStructure(['message']);
+    }
+
+    public function test_validation_errors_provide_helpful_messages(): void
+    {
+        $response = $this->getJson('/api/holidays/public?validFrom=invalid-date');
+
+        $response->assertStatus(422);
+
+        $data = $response->json();
+        $this->assertArrayHasKey('errors', $data);
+        $this->assertArrayHasKey('validFrom', $data['errors']);
+
+        // Error message should be helpful, not cryptic
+        $errorMessage = $data['errors']['validFrom'][0];
+        $this->assertNotEmpty($errorMessage);
+        $this->assertIsString($errorMessage);
+    }
+
+    public function test_rate_limit_errors_return_429_with_message(): void
+    {
+        // Exhaust rate limit
+        for ($i = 0; $i < 200; $i++) {
+            $this->getJson('/api/holidays/public?countryIsoCode=IE');
+        }
+
+        // Next request should be rate limited
+        $response = $this->getJson('/api/holidays/public?countryIsoCode=IE');
+
+        $response->assertStatus(429)
+            ->assertJsonStructure(['error']);
+
+        $data = $response->json();
+        $this->assertStringContainsString('Too many', $data['error']);
     }
 }
