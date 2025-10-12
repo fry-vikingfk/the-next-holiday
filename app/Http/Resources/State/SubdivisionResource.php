@@ -20,16 +20,18 @@ class SubdivisionResource extends JsonResource
             'shortName' => $this->shortName, // or $this->short_name
             'category' => collect($this->category)->map(function ($item) {
                 $item = (array) $item;
+
                 return [
                     'language' => $item['language'] ?? null,
-                    'text'     => $item['text'] ?? null,
+                    'text' => $item['text'] ?? null,
                 ];
             })->values()->all(),
-                        'name' => collect($this->name)->map(function ($item) {
+            'name' => collect($this->name)->map(function ($item) {
                 $item = (array) $item;
+
                 return [
                     'language' => $item['language'] ?? null,
-                    'text'     => $item['text'] ?? null,
+                    'text' => $item['text'] ?? null,
                 ];
             })->values()->all(),
             'officialLanguages' => $this->officialLanguages,

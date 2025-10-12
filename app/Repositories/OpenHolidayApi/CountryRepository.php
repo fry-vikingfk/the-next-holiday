@@ -2,16 +2,15 @@
 
 namespace App\Repositories\OpenHolidayApi;
 
-use Illuminate\Support\Collection;
-use App\Services\OpenHolidaysApiService;
 use App\Repositories\Contracts\CountryRepositoryInterface;
+use App\Services\OpenHolidaysApiService;
+use Illuminate\Support\Collection;
 
 class CountryRepository implements CountryRepositoryInterface
 {
     public function __construct(
         private readonly OpenHolidaysApiService $service
-    )
-    {}
+    ) {}
 
     public function getCountryList(?string $languageIsoCode = ''): Collection
     {

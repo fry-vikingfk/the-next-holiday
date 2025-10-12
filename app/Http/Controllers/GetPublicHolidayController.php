@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Holiday\HolidayResource;
 use App\Http\Requests\Holiday\HolidaySearchRequest;
+use App\Http\Resources\Holiday\HolidayResource;
 use App\Repositories\Contracts\HolidayRepositoryInterface;
 use App\Traits\PaginationTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -11,11 +11,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class GetPublicHolidayController extends Controller
 {
     use PaginationTrait;
-    
+
     public function __construct(
         private readonly HolidayRepositoryInterface $holidayRepository
-        )
-    {}
+    ) {}
 
     public function __invoke(HolidaySearchRequest $request): JsonResource
     {
@@ -24,7 +23,7 @@ class GetPublicHolidayController extends Controller
             $request->validated('perPage'),
             $request->validated('page')
         );
-      
+
         return HolidayResource::collection($paginated)
             ->additional(['message' => 'List of public holidays']);
     }

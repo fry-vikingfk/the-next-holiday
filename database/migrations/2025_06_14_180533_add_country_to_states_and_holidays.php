@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('countries')) {
+        if (! Schema::hasTable('countries')) {
             Schema::create('countries', function (Blueprint $table) {
                 $table->id();
                 $table->string('code', 2)->unique(); // ISO 3166-1 alpha-2
@@ -20,7 +20,7 @@ return new class extends Migration
             });
         }
 
-        if (!Schema::hasColumn('states', 'country_id')) {
+        if (! Schema::hasColumn('states', 'country_id')) {
             Schema::table('states', function (Blueprint $table) {
                 $table->foreignId('country_id')
                     ->nullable()
@@ -30,7 +30,7 @@ return new class extends Migration
             });
         }
 
-        if (!Schema::hasColumn('holidays', 'country_id')) {
+        if (! Schema::hasColumn('holidays', 'country_id')) {
             Schema::table('holidays', function (Blueprint $table) {
                 $table->foreignId('country_id')
                     ->nullable()

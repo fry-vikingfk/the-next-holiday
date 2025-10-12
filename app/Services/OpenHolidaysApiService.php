@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use GuzzleHttp\Exception\GuzzleException;
 
 class OpenHolidaysApiService
 {
@@ -17,18 +17,17 @@ class OpenHolidaysApiService
     {
         $this->client = new Client([
             'base_uri' => self::BASE_URL, // Base API URL
-            'timeout'  => 10.0, // Timeout in seconds
+            'timeout' => 10.0, // Timeout in seconds
         ]);
     }
 
     public function getPublicHolidays(
-        string $countryIsoCode, 
-        string $languageIsoCode = '',
-        ?string $subdivisionCode = null,
-        string $validFrom, 
+        string $countryIsoCode,
+        string $languageIsoCode,
+        ?string $subdivisionCode,
+        string $validFrom,
         string $validTo
-    ): ?Collection
-    {
+    ): ?Collection {
         try {
             $response = $this->client->get('PublicHolidays', [
                 'query' => [
@@ -43,20 +42,19 @@ class OpenHolidaysApiService
             return collect(json_decode($response->getBody()->getContents()));
 
         } catch (GuzzleException $e) {
-            Log::error('Error fetching public holidays: ' . $e->getMessage());
+            Log::error('Error fetching public holidays: '.$e->getMessage());
 
             return null;
         }
     }
 
     public function getSchoolHolidays(
-        string $countryIsoCode, 
-        string $languageIsoCode = '', 
-        ?string $subdivisionCode = null,
-        string $validFrom, 
+        string $countryIsoCode,
+        string $languageIsoCode,
+        ?string $subdivisionCode,
+        string $validFrom,
         string $validTo
-    ): ?Collection
-    {
+    ): ?Collection {
         try {
             $response = $this->client->get('SchoolHolidays', [
                 'query' => [
@@ -71,13 +69,13 @@ class OpenHolidaysApiService
             return collect(json_decode($response->getBody()->getContents()));
 
         } catch (GuzzleException $e) {
-            Log::error('Error fetching school holidays: ' . $e->getMessage());
+            Log::error('Error fetching school holidays: '.$e->getMessage());
 
             return null;
         }
     }
 
-    public function getCountries(?string $languageIsoCode = ''): ?Collection 
+    public function getCountries(?string $languageIsoCode = ''): ?Collection
     {
         try {
             $query = $languageIsoCode ? ['languageIsoCode' => $languageIsoCode] : [];
@@ -86,9 +84,9 @@ class OpenHolidaysApiService
             ]);
 
             return collect(json_decode($response->getBody()->getContents()));
-            
+
         } catch (GuzzleException $e) {
-            Log::error("Failed to fetch countries: " . $e->getMessage());
+            Log::error('Failed to fetch countries: '.$e->getMessage());
 
             return null;
         }
@@ -97,10 +95,9 @@ class OpenHolidaysApiService
     public function getSubdivisions(
         string $countryIsoCode,
         ?string $languageIsoCode = null
-    ): ?Collection
-    {
+    ): ?Collection {
         try {
-            $response = $this->client->get("Subdivisions", [
+            $response = $this->client->get('Subdivisions', [
                 'query' => [
                     'countryIsoCode' => $countryIsoCode,
                     'languageIsoCode' => $languageIsoCode,
@@ -110,7 +107,7 @@ class OpenHolidaysApiService
             return collect(json_decode($response->getBody()->getContents()));
 
         } catch (GuzzleException $e) {
-            Log::error("Failed to fetch subdivisions for {$countryIsoCode}: " . $e->getMessage());
+            Log::error("Failed to fetch subdivisions for {$countryIsoCode}: ".$e->getMessage());
 
             return null;
         }
@@ -124,7 +121,7 @@ class OpenHolidaysApiService
             return collect(json_decode($response->getBody()->getContents()));
 
         } catch (GuzzleException $e) {
-            Log::error("Failed to fetch languages: " . $e->getMessage());
+            Log::error('Failed to fetch languages: '.$e->getMessage());
 
             return null;
         }

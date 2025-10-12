@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\PaginationTrait;
-use App\Http\Resources\Holiday\HolidayResource;
 use App\Http\Requests\Holiday\HolidaySearchRequest;
+use App\Http\Resources\Holiday\HolidayResource;
 use App\Repositories\Contracts\HolidayRepositoryInterface;
+use App\Traits\PaginationTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class GetSchoolHolidayController extends Controller
 {
     use PaginationTrait;
-    
+
     public function __construct(
         private readonly HolidayRepositoryInterface $holidayRepository
-        )
-    {}
-    
+    ) {}
+
     public function __invoke(HolidaySearchRequest $request): JsonResource
     {
         $paginated = $this->paginateCollection(

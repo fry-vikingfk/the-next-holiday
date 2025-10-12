@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\Holiday;
 
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class HolidayResource extends JsonResource

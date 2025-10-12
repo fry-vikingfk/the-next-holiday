@@ -8,8 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 class HolidaySearchRequest extends FormRequest
 {
     public const DEFAULT_LANGUAGE = 'en';
+
     public const DEFAULT_COUNTRY = 'IE';
+
     public const DEFAULT_SUBDIVISION = '';
+
     public const DEFAULT_PER_PAGE = 4;
 
     /**
@@ -28,7 +31,7 @@ class HolidaySearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'countryIsoCode' => ['sometimes', 'string' , 'regex:/^[A-Z]{2}$/'],
+            'countryIsoCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}$/'],
             'subdivisionCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}(?:-[A-Z]{2})?(?:-[A-Z]{2})?$/'],
             'languageIsoCode' => ['sometimes', 'string', 'regex:/^[A-Z]{2}$/'],
             'validFrom' => ['sometimes', 'date:Y-m-d'],

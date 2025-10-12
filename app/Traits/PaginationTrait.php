@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 trait PaginationTrait
 {

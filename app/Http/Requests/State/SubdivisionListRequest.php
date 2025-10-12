@@ -22,7 +22,7 @@ class SubdivisionListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'countryIsoCode' =>  ['required', 'string', 'size:2'],
+            'countryIsoCode' => ['required', 'string', 'size:2'],
             'languageIsoCode' => ['nullable', 'string', 'size:2'],
         ];
     }
