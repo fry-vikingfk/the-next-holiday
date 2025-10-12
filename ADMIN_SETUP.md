@@ -14,9 +14,22 @@ ADMIN_PASSWORD=your-secure-password-here
 
 ## Setup Instructions
 
-### 1. Set Environment Variables
+### Local Development (Default Behavior)
 
-Add the following to your `.env` file:
+For **local** and **testing** environments, if `ADMIN_PASSWORD` is not set in `.env`, the seeder will automatically:
+- Create an admin user with password: `password`
+- Email: `admin@example.com`
+- Display a warning message
+
+This means you can run `make init` or `make db-reset` immediately without any configuration!
+
+**Default Admin Credentials (Local Only):**
+- Email: `admin@example.com`
+- Password: `password`
+
+### 1. Set Environment Variables (Optional for Local, Required for Production)
+
+For production or to customize credentials, add the following to your `.env` file:
 
 ```bash
 # Admin User Configuration
@@ -25,7 +38,10 @@ ADMIN_EMAIL=your-email@example.com
 ADMIN_PASSWORD=your-secure-password
 ```
 
-**Important:** Use a strong password in production!
+**Important:**
+- ⚠️ Default password only works in `local` and `testing` environments
+- ⚠️ Use a strong password in production!
+- ⚠️ Production deployment will **fail** if ADMIN_PASSWORD is not set
 
 ### 2. Run Database Seeding
 
