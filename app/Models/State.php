@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Holiday;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class State extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',

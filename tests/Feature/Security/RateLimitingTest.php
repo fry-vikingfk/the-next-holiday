@@ -3,7 +3,6 @@
 namespace Tests\Feature\Security;
 
 use App\Models\Country;
-use App\Models\State;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

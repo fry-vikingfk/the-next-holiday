@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Country;
-use App\Models\State;
 use App\Models\Holiday;
+use App\Models\State;
 use Illuminate\Database\Seeder;
 
 class HolidaySeeder extends Seeder
@@ -21,7 +21,7 @@ class HolidaySeeder extends Seeder
                 ])
             );
         }
-     
+
         Holiday::factory()
             ->count(50)
             ->make() // Don't persist yet

@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class GetPublicHolidayControllerTest extends TestCase
@@ -12,44 +10,44 @@ class GetPublicHolidayControllerTest extends TestCase
     {
         $response = $this->get('/api/holidays/public');
         $response->assertStatus(200)
-        ->assertJson([
-            'message' => 'List of public holidays',
-        ])
-        ->assertJsonStructure([
-            'message',
-            'data' => [
-                '*' => [
-                    'id',
-                    'name' => [
-                        '*' => [
-                            'language',
-                            'text',
+            ->assertJson([
+                'message' => 'List of public holidays',
+            ])
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name' => [
+                            '*' => [
+                                'language',
+                                'text',
+                            ],
                         ],
+                        'startDate',
+                        'endDate',
+                        'type',
+                        'regionalScope',
+                        'temporalScope',
+                        'nationwide',
                     ],
-                    'startDate',
-                    'endDate',
-                    'type',
-                    'regionalScope',
-                    'temporalScope',
-                    'nationwide',
                 ],
-            ],
-            'links' => [
-                'first',
-                'last',
-                'prev',
-                'next',
-            ],
-            'meta' => [
-                'current_page',
-                'from',
-                'last_page',
-                'path',
-                'per_page',
-                'to',
-                'total',
-            ],
-        ]);
+                'links' => [
+                    'first',
+                    'last',
+                    'prev',
+                    'next',
+                ],
+                'meta' => [
+                    'current_page',
+                    'from',
+                    'last_page',
+                    'path',
+                    'per_page',
+                    'to',
+                    'total',
+                ],
+            ]);
     }
 
     public function test_index_fails_validation_if_invalid_country_code()

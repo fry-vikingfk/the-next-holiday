@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\State;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,10 +14,10 @@ class StateFactory extends Factory
 
     public function definition(): array
     {
-        
+
         return [
             'code' => strtoupper(fake()->lexify('??')),
-            'name' => fake()->state(), 
+            'name' => fake()->state(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Contracts;
 
-use Illuminate\Support\Collection;
 use App\Http\Requests\State\SubdivisionListRequest;
+use Illuminate\Support\Collection;
 
 interface SubdivisionRepositoryInterface
 {

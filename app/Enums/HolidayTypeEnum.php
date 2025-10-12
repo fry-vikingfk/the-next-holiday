@@ -9,7 +9,7 @@ enum HolidayTypeEnum: string
     case SCHOOL_HOLIDAY = 'school';
     case OBSERVED_HOLIDAY = 'observed';
     case RELIGIOUS_HOLIDAY = 'religious';
-    
+
     public function label(): string
     {
         return match ($this) {
@@ -23,6 +23,6 @@ enum HolidayTypeEnum: string
 
     public static function values(): array
     {
-        return array_map(fn($type) => $type->value, self::cases());
+        return array_map(fn ($type) => $type->value, self::cases());
     }
 }
