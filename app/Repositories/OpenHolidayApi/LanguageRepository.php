@@ -15,6 +15,6 @@ class LanguageRepository implements LanguageRepositoryInterface
 
     public function getLanguages(): Collection
     {
-        return $this->service->getLanguages();
+        return $this->service->getLanguages() ?? collect();
     }
 }

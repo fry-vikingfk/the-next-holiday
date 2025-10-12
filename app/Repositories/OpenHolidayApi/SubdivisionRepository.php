@@ -18,6 +18,6 @@ class SubdivisionRepository implements SubdivisionRepositoryInterface
         return $this->service->getSubdivisions(
             languageIsoCode: $request->validated('languageIsoCode'),
             countryIsoCode: $request->validated('countryIsoCode')
-        );
+        ) ?? collect();
     }
 }
