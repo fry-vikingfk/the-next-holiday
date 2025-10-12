@@ -3,12 +3,12 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Throwable;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Throwable;
 
 class CatchExceptions
 {
@@ -29,11 +29,17 @@ class CatchExceptions
             ], $e->getStatusCode());
 
         } catch (Throwable $e) {
+            // Log the full error for debugging
+            logger()->error('Unhandled exception in API', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return response()->json([
                 'error' => 'Internal server error.',
-                'message' => config('app.debug') ? $e->getMessage() : null,
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
-

@@ -17,6 +17,6 @@ class CountryRepository implements CountryRepositoryInterface
     {
         return $this->service->getCountries(
             languageIsoCode: $languageIsoCode
-        );
+        ) ?? collect();
     }
 }

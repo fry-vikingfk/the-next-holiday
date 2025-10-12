@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\State;
 
-use Illuminate\Http\Request;
 use App\Http\Resources\Country\CountryResource;
 use App\Http\Resources\Holiday\HolidayResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StateResource extends JsonResource
