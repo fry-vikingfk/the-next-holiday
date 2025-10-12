@@ -24,8 +24,8 @@ class CountryControllerTest extends TestCase
 
     public function test_store_creates_new_country()
     {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        $admin = User::factory()->admin()->create();
+        Sanctum::actingAs($admin);
 
         $data = [
             'code' => 'US',
@@ -44,8 +44,8 @@ class CountryControllerTest extends TestCase
 
     public function test_update_country()
     {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        $admin = User::factory()->admin()->create();
+        Sanctum::actingAs($admin);
 
         $country = Country::factory()->create(['code' => 'CA', 'name' => 'Canada']);
 
@@ -83,8 +83,8 @@ class CountryControllerTest extends TestCase
 
     public function test_delete_country()
     {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        $admin = User::factory()->admin()->create();
+        Sanctum::actingAs($admin);
 
         $country = \App\Models\Country::factory()->create(['code' => 'FR', 'name' => 'France']);
 

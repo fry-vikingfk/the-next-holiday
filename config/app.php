@@ -123,4 +123,18 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Admin User Configuration
+    |--------------------------------------------------------------------------
+    |
+    | These values are used to create the default admin user during database
+    | seeding. Set these in your .env file to customize the admin credentials.
+    |
+    */
+
+    'admin_name' => env('ADMIN_NAME', 'Admin User'),
+    'admin_email' => env('ADMIN_EMAIL', 'admin@example.com'),
+    'admin_password' => env('ADMIN_PASSWORD'),
+
 ];

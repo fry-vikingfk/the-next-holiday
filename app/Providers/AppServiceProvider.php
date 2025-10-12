@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Repositories\Contracts\CountryRepositoryInterface;
 use App\Repositories\Contracts\HolidayRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
@@ -12,6 +13,7 @@ use App\Repositories\OpenHolidayApi\LanguageRepository;
 use App\Repositories\OpenHolidayApi\SubdivisionRepository;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +36,23 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
+        $this->configureSuperAdminGate();
+    }
+
+    /**
+     * Configure super admin gate that bypasses all authorization checks.
+     */
+    protected function configureSuperAdminGate(): void
+    {
+        Gate::before(function (User $user, string $ability) {
+            // If user is an admin, grant all abilities
+            if ($user->is_admin) {
+                return true;
+            }
+
+            // Otherwise, let the policy decide
+            return null;
+        });
     }
 
     protected function configureRateLimiting(): void
