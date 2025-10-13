@@ -501,17 +501,25 @@
                 if (data.length) {
                     const [first, ...rest] = data;
                     mainHoliday.innerText = first.name?.[0]?.text?.toUpperCase() ?? __('unnamed');
+
+                    // Format date range
+                    const formatDateRange = (startDate, endDate) => {
+                        if (!startDate) return '';
+                        if (!endDate || startDate === endDate) return startDate;
+                        return `${startDate} - ${endDate}`;
+                    };
+
                     mainType.innerHTML = `
                         ${first.type ? __(first.type.toLowerCase()).toUpperCase() : ''}
-                        <small>${first.startDate ?? ''}</small>
+                        <small>${formatDateRange(first.startDate, first.endDate)}</small>
                     `;
 
                     if (rest.length > 0) {
                         upcomingTitle.style.display = 'block';
-                        otherHolidays.innerHTML = rest.map(({ name, startDate }) => `
+                        otherHolidays.innerHTML = rest.map(({ name, startDate, endDate }) => `
                             <div class="holiday-card">
                                 <div class="holiday-card-name">${name?.[0]?.text ?? __('unnamed-2')}</div>
-                                <div class="holiday-card-date">${startDate ?? ''}</div>
+                                <div class="holiday-card-date">${formatDateRange(startDate, endDate)}</div>
                             </div>
                         `).join('');
                     }
