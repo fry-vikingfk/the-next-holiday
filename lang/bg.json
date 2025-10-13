@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Следващи Празници",
+    "upcoming-holidays": "Предстоящи Празници",
+    "english": "Английски",
+    "espanol": "Испански",
+    "deutsch": "Немски",
+    "public": "Официални",
+    "school": "Училищни",
+    "loading": "Зареждане...",
+    "all-regions": "Всички региони",
+    "please-select-a-region-for-school-holidays": "Моля, изберете регион за училищни ваканции.",
+    "unnamed": "БЕЗ ИМЕ",
+    "unnamed-1": "Без име",
+    "no-holidays-found": "Няма намерени празници.",
+    "error-loading-holidays": "Грешка при зареждане на празници."
+}

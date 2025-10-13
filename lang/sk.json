@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Ďalšie Sviatky",
+    "upcoming-holidays": "Nadchádzajúce Sviatky",
+    "english": "Angličtina",
+    "espanol": "Španielčina",
+    "deutsch": "Nemčina",
+    "public": "Verejné",
+    "school": "Školské",
+    "loading": "Načítava sa...",
+    "all-regions": "Všetky regióny",
+    "please-select-a-region-for-school-holidays": "Prosím, vyberte región pre školské prázdniny.",
+    "unnamed": "BEZ NÁZVU",
+    "unnamed-2": "Bez názvu",
+    "no-holidays-found": "Nenašli sa žiadne sviatky.",
+    "error-loading-holidays": "Chyba pri načítavaní sviatkov."
+}

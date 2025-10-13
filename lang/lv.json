@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Nākamie Svētki",
+    "upcoming-holidays": "Gaidāmie Svētki",
+    "english": "Angļu",
+    "espanol": "Spāņu",
+    "deutsch": "Vācu",
+    "public": "Valsts",
+    "school": "Skolas",
+    "loading": "Ielādē...",
+    "all-regions": "Visi reģioni",
+    "please-select-a-region-for-school-holidays": "Lūdzu, izvēlieties reģionu skolas brīvdienām.",
+    "unnamed": "BEZ NOSAUKUMA",
+    "unnamed-2": "Bez nosaukuma",
+    "no-holidays-found": "Svētki nav atrasti.",
+    "error-loading-holidays": "Kļūda, ielādējot svētkus."
+}

@@ -37,7 +37,16 @@ clear-cache:
 	- @$(SAIL) artisan view:clear
 
 test:
-	- @$(SAIL) artisan test
+	- @$(SAIL) artisan test --coverage
+
+test-specific:
+	- @$(SAIL) artisan test --filter=$(filter)
+
+pint-test:
+	- ./vendor/bin/pint --test
+
+pint-fix:
+	- ./vendor/bin/pint
 
 # populate-holidays:
 # 	- @$(SAIL) artisan holidays:populate $(shell date -d "$(shell date +%Y)-01-01" +%Y-%m-%d) $(shell date -d "$(shell date +%Y)-12-31" +%Y-%m-%d)

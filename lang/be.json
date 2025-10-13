@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Next Holidays",
+    "upcoming-holidays": "Upcoming Holidays",
+    "english": "English",
+    "espanol": "Español",
+    "deutsch": "Deutsch",
+    "public": "Public",
+    "school": "School",
+    "loading": "Loading...",
+    "all-regions": "All regions",
+    "please-select-a-region-for-school-holidays": "Please select a region for school holidays.",
+    "unnamed": "UNNAMED",
+    "unnamed-1": "Unnamed",
+    "no-holidays-found": "No holidays found.",
+    "error-loading-holidays": "Error loading holidays."
+}

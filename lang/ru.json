@@ -1,0 +1,16 @@
+{
+    "next-holidays": "Ближайшие Праздники",
+    "upcoming-holidays": "Предстоящие Праздники",
+    "english": "Английский",
+    "espanol": "Испанский",
+    "deutsch": "Немецкий",
+    "public": "Государственные",
+    "school": "Школьные",
+    "loading": "Загрузка...",
+    "all-regions": "Все регионы",
+    "please-select-a-region-for-school-holidays": "Пожалуйста, выберите регион для школьных каникул.",
+    "unnamed": "БЕЗ НАЗВАНИЯ",
+    "unnamed-2": "Без названия",
+    "no-holidays-found": "Праздники не найдены.",
+    "error-loading-holidays": "Ошибка загрузки праздников."
+}
