@@ -384,6 +384,7 @@
         let type = 'public';
         let subdivision = null;
         let hasSubdivisions = false;
+        let countryDetected = false;
 
         const countrySelect = document.getElementById('countrySelect');
         const subdivisionSelect = document.getElementById('subdivisionSelect');
@@ -393,6 +394,24 @@
         const mainType = document.getElementById('mainType');
         const otherHolidays = document.getElementById('otherHolidays');
         const upcomingTitle = document.getElementById('upcomingTitle');
+
+        // Detect user's country by IP
+        const detectUserCountry = async () => {
+            try {
+                const response = await fetch('/api/user-country');
+                const data = await response.json();
+
+                if (data.countryCode && data.detected) {
+                    country = data.countryCode;
+                    countryDetected = true;
+                    console.log('Country detected:', data.countryName, '(' + data.countryCode + ')');
+                } else {
+                    console.log('Using default country:', country);
+                }
+            } catch (err) {
+                console.warn('Could not detect country, using default:', err);
+            }
+        };
 
         // Load languages
         const loadLanguages = async () => {
@@ -566,12 +585,14 @@
             loadHolidays();
         });
 
-        // Initial load
-        loadLanguages().then(() => {
-            updateUITexts(); // Set initial UI texts
-            loadCountries().then(() => {
-                loadSubdivisions();
-                loadHolidays();
+        // Initial load - detect country first, then load everything
+        detectUserCountry().then(() => {
+            loadLanguages().then(() => {
+                updateUITexts(); // Set initial UI texts
+                loadCountries().then(() => {
+                    loadSubdivisions();
+                    loadHolidays();
+                });
             });
         });
     </script>
