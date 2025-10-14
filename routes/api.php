@@ -5,6 +5,7 @@ use App\Http\Controllers\GetLanguagesController;
 use App\Http\Controllers\GetPublicHolidayController;
 use App\Http\Controllers\GetSchoolHolidayController;
 use App\Http\Controllers\GetSubdivisionsController;
+use App\Http\Controllers\GetUserCountryController;
 use App\Http\Controllers\StateController;
 use App\Http\Middleware\CatchExceptions;
 use Illuminate\Http\Request;
@@ -65,3 +66,7 @@ Route::controller(GetLanguagesController::class)
         Route::get('/', '__invoke')
             ->name('list');
     });
+
+Route::get('/user-country', GetUserCountryController::class)
+    ->middleware([CatchExceptions::class, 'throttle:metadata'])
+    ->name('user.country');
