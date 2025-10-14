@@ -14,7 +14,7 @@ class GetUserCountryController extends Controller
     public function __invoke(Request $request)
     {
         // Get client IP
-        $ip = $request->ip();            
+        $ip = $request->ip();
 
         // For local development, use a default country
         if ($ip === '127.0.0.1' || $ip === '::1' || str_starts_with($ip, '192.168.') || str_starts_with($ip, '10.')) {
