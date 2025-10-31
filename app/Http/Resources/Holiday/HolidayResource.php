@@ -5,8 +5,8 @@ namespace App\Http\Resources\Holiday;
 use App\Enums\CountryLocaleEnum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Cache;
 
 class HolidayResource extends JsonResource
 {
