@@ -9,9 +9,6 @@ use App\Models\State;
 
 class StateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $this->authorize('viewAny', State::class);
@@ -22,9 +19,6 @@ class StateController extends Controller
         ])->setStatusCode(200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreStateRequest $request)
     {
         $this->authorize('create', State::class);
@@ -37,14 +31,11 @@ class StateController extends Controller
         ])->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(State $state)
     {
-        $state = State::with('holidays')->findOrFail($id);
-
         $this->authorize('view', $state);
+
+        $state->load('holidays');
 
         return response()->json([
             'message' => 'State details',
@@ -52,13 +43,8 @@ class StateController extends Controller
         ])->setStatusCode(200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateStateRequest $request, string $id)
+    public function update(UpdateStateRequest $request, State $state)
     {
-        $state = State::findOrFail($id);
-
         $this->authorize('update', $state);
 
         $state->update($request->validated());
@@ -69,13 +55,8 @@ class StateController extends Controller
         ])->setStatusCode(202);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(State $state)
     {
-        $state = State::findOrFail($id);
-
         $this->authorize('delete', $state);
 
         $state->delete();

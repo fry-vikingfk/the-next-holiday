@@ -36,7 +36,7 @@ clear-cache:
 	- @$(SAIL) artisan route:clear
 	- @$(SAIL) artisan view:clear
 
-test:
+test: clear-cache
 	- @$(SAIL) artisan test --coverage
 
 test-specific:
@@ -50,3 +50,21 @@ pint-fix:
 
 # populate-holidays:
 # 	- @$(SAIL) artisan holidays:populate $(shell date -d "$(shell date +%Y)-01-01" +%Y-%m-%d) $(shell date -d "$(shell date +%Y)-12-31" +%Y-%m-%d)
+
+# Full quality check: Fix code style and run tests
+check:
+	@echo "========================================"
+	@echo "Running full quality check..."
+	@echo "========================================"
+	@echo ""
+	@echo "Step 1/2: Fixing code style with Pint..."
+	@$(SAIL) exec laravel.test vendor/bin/pint
+	@echo ""
+	@echo "✓ Code style fixed!"
+	@echo ""
+	@echo "Step 2/2: Running tests..."
+	@$(ARTISAN) test
+	@echo ""
+	@echo "========================================"
+	@echo "✓ All checks passed!"
+	@echo "========================================"
