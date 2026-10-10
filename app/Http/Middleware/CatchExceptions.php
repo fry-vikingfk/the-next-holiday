@@ -29,7 +29,6 @@ class CatchExceptions
             ], $e->getStatusCode());
 
         } catch (Throwable $e) {
-            // Log the full error for debugging
             logger()->error('Unhandled exception in API', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
