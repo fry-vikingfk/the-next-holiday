@@ -2,9 +2,16 @@
     "agents": [
         "claude_code"
     ],
-    "editors": [
-        "claude_code",
-        "vscode"
-    ],
-    "guidelines": []
+    "cloud": true,
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch": false,
+    "sail": true,
+    "skills": [
+        "infer-conventions",
+        "deploying-to-cloud",
+        "laravel-best-practices",
+        "testing-best-practices",
+        "tailwindcss-development"
+    ]
 }
