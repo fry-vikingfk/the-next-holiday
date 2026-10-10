@@ -86,7 +86,7 @@ class CountryControllerTest extends TestCase
         $admin = User::factory()->admin()->create();
         Sanctum::actingAs($admin);
 
-        $country = \App\Models\Country::factory()->create(['code' => 'FR', 'name' => 'France']);
+        $country = Country::factory()->create(['code' => 'FR', 'name' => 'France']);
 
         $response = $this->deleteJson(route('countries.destroy', $country));
 

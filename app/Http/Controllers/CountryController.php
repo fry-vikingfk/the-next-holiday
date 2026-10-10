@@ -16,9 +16,6 @@ class CountryController extends Controller
         private readonly CountryRepositoryInterface $countryRepository
     ) {}
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(CountryListRequest $request)
     {
         $this->authorize('viewAny', Country::class);
@@ -33,9 +30,6 @@ class CountryController extends Controller
         ])->setStatusCode(200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCountryRequest $request)
     {
         $this->authorize('create', Country::class);
@@ -48,22 +42,16 @@ class CountryController extends Controller
         ])->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Country $country)
     {
         $this->authorize('view', $country);
 
         return response()->json([
             'message' => 'Country details',
-            'data' => CountryResource::make($country->load(['states', 'states.holidays'])),
+            'data' => CountryResource::make($country->load(['states.holidays'])),
         ])->setStatusCode(200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCountryRequest $request, Country $country)
     {
         $this->authorize('update', $country);
@@ -76,9 +64,6 @@ class CountryController extends Controller
         ])->setStatusCode(202);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Country $country)
     {
         $this->authorize('delete', $country);

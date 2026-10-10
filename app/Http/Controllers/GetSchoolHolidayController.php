@@ -3,28 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Holiday\HolidaySearchRequest;
-use App\Http\Resources\Holiday\HolidayResource;
-use App\Repositories\Contracts\HolidayRepositoryInterface;
-use App\Traits\PaginationTrait;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
-class GetSchoolHolidayController extends Controller
+class GetSchoolHolidayController extends GetHolidayController
 {
-    use PaginationTrait;
-
-    public function __construct(
-        private readonly HolidayRepositoryInterface $holidayRepository
-    ) {}
-
-    public function __invoke(HolidaySearchRequest $request): JsonResource
+    protected function fetchHolidays(HolidaySearchRequest $request): Collection
     {
-        $paginated = $this->paginateCollection(
-            $this->holidayRepository->getSchoolHolidays($request),
-            $request->validated('perPage'),
-            $request->validated('page')
-        );
+        return $this->holidayRepository->getSchoolHolidays($request);
+    }
 
-        return HolidayResource::collection($paginated)
-            ->additional(['message' => 'List of school holidays']);
+    protected function responseMessage(): string
+    {
+        return 'List of school holidays';
     }
 }
