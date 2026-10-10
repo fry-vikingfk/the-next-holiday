@@ -11,14 +11,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        run: |
+          git init .
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git fetch --depth 1 origin ${{ github.sha }}
+          git checkout FETCH_HEAD
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.4
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath
-          coverage: none
+      - name: Setup PHP 8.4
+        run: |
+          sudo add-apt-repository ppa:ondrej/php -y
+          sudo apt-get update -qq
+          sudo apt-get install -y \
+            php8.4-cli php8.4-common php8.4-dom php8.4-curl \
+            php8.4-libxml php8.4-mbstring php8.4-zip php8.4-bcmath php8.4-xml
+          sudo update-alternatives --set php /usr/bin/php8.4
+          php --version
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
