@@ -26,6 +26,7 @@ class HolidayResource extends JsonResource
             'name' => $this->name,
             'startDate' => $startDate->locale($locale)->translatedFormat('l, d. F Y.'),
             'endDate' => $endDate->locale($locale)->translatedFormat('l, d. F Y.'),
+            'startDateIso' => $startDate->toDateString(),
             'type' => $this->type,
             'regionalScope' => $this->regionalScope,
             'temporalScope' => $this->temporalScope,

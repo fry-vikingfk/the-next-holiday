@@ -19,7 +19,7 @@ class SubdivisionResource extends JsonResource
             'category' => $this->mapMultilingualField($this->category),
             'name' => $this->mapMultilingualField($this->name),
             'officialLanguages' => $this->officialLanguages,
-            'children' => $this->children
+            'children' => isset($this->children) && $this->children
                 ? SubdivisionResource::collection($this->children)
                 : null,
         ];
